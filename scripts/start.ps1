@@ -1,6 +1,6 @@
 param(
     [string]$VenvPath = ".venv",
-    [string]$Host = "127.0.0.1",
+    [string]$BindAddress = "127.0.0.1",
     [int]$Port = 5000,
     [string]$AdminPassword,
     [string]$WebrootPath,
@@ -39,8 +39,8 @@ if ($WebrootPath) {
     $env:WEBROOT_PATH = $resolvedWebroot.Path
 }
 
-$env:HOST = $Host
+$env:HOST = $BindAddress
 $env:PORT = $Port
 
-Write-Host "Starting development server on http://$Host`:$Port" -ForegroundColor Green
+Write-Host "Starting development server on http://$BindAddress`:$Port" -ForegroundColor Green
 & $venvPython app.py
