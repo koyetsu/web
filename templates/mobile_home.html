@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}" />
+{% endblock %}
+
+{% block content %}
+  <div class="mobile-wrapper">
+    <div class="mobile-header">
+      <div class="mobile-branding">
+        <span class="mobile-logo">{{ content.site.name }}</span>
+        <span class="mobile-tagline">{{ content.site.tagline }}</span>
+      </div>
+      <a class="mobile-desktop-link" href="{{ url_for('home', full='1') }}">View full site</a>
+    </div>
+
+    <section class="mobile-hero">
+      <span class="badge">{{ home.hero.badge }}</span>
+      <h1>{{ home.hero.title }}</h1>
+      <p>{{ home.hero.description }}</p>
+      <a class="primary-button" href="{{ home.hero.cta_link }}">{{ home.hero.cta_text }}</a>
+    </section>
+
+    {% if home.hero.image %}
+      <section class="mobile-hero-image">
+        <img src="{{ home.hero.image }}" alt="{{ home.hero.image_alt }}" />
+      </section>
+    {% endif %}
+
+    <section class="mobile-section">
+      <h2>{{ home.what_we_print.title }}</h2>
+      <div class="mobile-card-list">
+        {% for item in home.what_we_print['items'] %}
+          <article class="mobile-card">
+            {% if item.image %}
+              <div class="mobile-card-media">
+                <img src="{{ item.image }}" alt="{{ item.image_alt }}" loading="lazy" />
+              </div>
+            {% endif %}
+            <div class="mobile-card-body">
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.description }}</p>
+              {% if item.bullets %}
+                <ul>
+                  {% for bullet in item.bullets %}
+                    <li>{{ bullet }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="mobile-section">
+      <h2>{{ home.why_choose.title }}</h2>
+      <div class="mobile-card-list compact">
+        {% for item in home.why_choose['items'] %}
+          <article class="mobile-card">
+            {% if item.image %}
+              <div class="mobile-card-media icon">
+                <img src="{{ item.image }}" alt="{{ item.image_alt }}" loading="lazy" />
+              </div>
+            {% endif %}
+            <div class="mobile-card-body">
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.description }}</p>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="mobile-section testimonials">
+      <h2>{{ home.testimonials.title }}</h2>
+      <div class="mobile-testimonials">
+        {% for testimonial in home.testimonials['items'] %}
+          <blockquote>
+            <p>{{ testimonial.quote }}</p>
+            <cite>{{ testimonial.author }}</cite>
+          </blockquote>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="mobile-section cta">
+      <h2>Visit or reach out</h2>
+      <div class="mobile-cta-grid">
+        <div>
+          <strong>{{ content.site.footer.visit.title }}</strong>
+          <ul>
+            {% for line in content.site.footer.visit.lines %}
+              <li>{{ line }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div>
+          <strong>{{ content.site.footer.contact.title }}</strong>
+          <ul>
+            {% for line in content.site.footer.contact.lines %}
+              <li>
+                {% if line.url %}
+                  <a href="{{ line.url }}">{{ line.label }}</a>
+                {% else %}
+                  {{ line.label }}
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <a class="primary-button" href="{{ url_for('contact_page') }}">Contact us</a>
+    </section>
+  </div>
+{% endblock %}

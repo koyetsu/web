@@ -25,7 +25,7 @@
     </style>
     {% block extra_head %}{% endblock %}
   </head>
-  <body>
+  <body class="{{ body_class|default('', true) }}">
     <header>
       <div class="navbar">
         <a class="logo" href="{{ url_for('home') }}">{{ content.site.name }}</a>

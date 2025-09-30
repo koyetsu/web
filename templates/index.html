@@ -22,6 +22,11 @@
       <div class="grid grid-3">
         {% for item in home.what_we_print["items"] %}
           <article class="card">
+            {% if item.image %}
+              <div class="card-media">
+                <img src="{{ item.image }}" alt="{{ item.image_alt }}" loading="lazy" />
+              </div>
+            {% endif %}
             <h3>{{ item.title }}</h3>
             <p>{{ item.description }}</p>
             {% if item.bullets %}
@@ -43,6 +48,11 @@
       <div class="grid grid-3">
         {% for item in home.why_choose["items"] %}
           <article class="card">
+            {% if item.image %}
+              <div class="card-media compact">
+                <img src="{{ item.image }}" alt="{{ item.image_alt }}" loading="lazy" />
+              </div>
+            {% endif %}
             <h3>{{ item.title }}</h3>
             <p>{{ item.description }}</p>
           </article>

@@ -54,6 +54,8 @@
           {
             "title": "Premium Marketing Collateral",
             "description": "Brochures, business cards, presentation folders, and mailers that match your brand colors with edge-to-edge precision.",
+            "image": "",
+            "image_alt": "",
             "bullets": [
               "Next-day rush available",
               "Soft-touch and matte finishes",
@@ -63,6 +65,8 @@
           {
             "title": "Large Format Signage",
             "description": "Banners, trade show displays, and window graphics engineered to stand up to Gulf Coast weather and sunlight.",
+            "image": "",
+            "image_alt": "",
             "bullets": [
               "UV-resistant inks",
               "Indoor & outdoor mounting options",
@@ -72,6 +76,8 @@
           {
             "title": "Custom Packaging & Labels",
             "description": "Short-run packaging, labels, and stickers that keep small-batch products looking professional and shelf-ready.",
+            "image": "",
+            "image_alt": "",
             "bullets": [
               "Low minimum quantities",
               "Eco-friendly substrates",
@@ -85,15 +91,21 @@
         "items": [
           {
             "title": "Real humans, rapid answers",
-            "description": "Call or text our production team directly. Receive proofs, updates, and timelines without waiting in a ticket queue."
+            "description": "Call or text our production team directly. Receive proofs, updates, and timelines without waiting in a ticket queue.",
+            "image": "",
+            "image_alt": ""
           },
           {
             "title": "Technology built for speed",
-            "description": "We invest in digital presses and wide-format printers that keep projects moving—most orders are fulfilled within 48 hours."
+            "description": "We invest in digital presses and wide-format printers that keep projects moving—most orders are fulfilled within 48 hours.",
+            "image": "",
+            "image_alt": ""
           },
           {
             "title": "Delivery that saves you time",
-            "description": "Complimentary delivery within 20 miles of Corpus Christi and coordinated shipping for statewide accounts."
+            "description": "Complimentary delivery within 20 miles of Corpus Christi and coordinated shipping for statewide accounts.",
+            "image": "",
+            "image_alt": ""
           }
         ]
       },
@@ -128,6 +140,8 @@
           {
             "title": "Digital & Offset Printing",
             "description": "Ultra-crisp color reproduction for marketing collateral, booklets, and stationery with turnaround as fast as 24 hours.",
+            "image": "",
+            "image_alt": "",
             "bullets": [
               "Full bleed and specialty finishes",
               "Mailing and fulfillment support",
@@ -137,6 +151,8 @@
           {
             "title": "Wide Format & Signage",
             "description": "Durable banners, wall murals, floor graphics, and trade show booths produced with weather-resistant inks and lamination.",
+            "image": "",
+            "image_alt": "",
             "bullets": [
               "On-site surveys & installation",
               "Fabric, vinyl, and mesh materials",
@@ -146,6 +162,8 @@
           {
             "title": "Packaging & Labels",
             "description": "Custom dielines, short-run folding cartons, and pressure-sensitive labels that highlight artisanal and specialty products.",
+            "image": "",
+            "image_alt": "",
             "bullets": [
               "Eco-friendly and textured stocks",
               "Low minimum orders",
@@ -161,6 +179,8 @@
             "title": "Launch Kit",
             "price": "$685",
             "description": "Everything a new business needs to look polished at first impression.",
+            "image": "",
+            "image_alt": "",
             "bullets": [
               "500 business cards with soft-touch finish",
               "250 tri-fold brochures",
@@ -171,6 +191,8 @@
             "title": "Event Spotlight",
             "price": "$1,140",
             "description": "Turn heads at expos, conferences, and local festivals with cohesive visuals.",
+            "image": "",
+            "image_alt": "",
             "bullets": [
               "10 ft. tension fabric display",
               "Two retractable banners",
@@ -181,6 +203,8 @@
             "title": "Retail Refresh",
             "price": "$1,980",
             "description": "Seasonal signage and packaging updates to keep your shelves fresh and on-brand.",
+            "image": "",
+            "image_alt": "",
             "bullets": [
               "Custom shelf talkers & wobblers",
               "1,000 product labels with spot UV",

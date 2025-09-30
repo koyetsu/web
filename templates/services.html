@@ -16,6 +16,11 @@
       <div class="grid grid-3">
         {% for item in services.capabilities["items"] %}
           <article class="card">
+            {% if item.image %}
+              <div class="card-media">
+                <img src="{{ item.image }}" alt="{{ item.image_alt }}" loading="lazy" />
+              </div>
+            {% endif %}
             <h3>{{ item.title }}</h3>
             <p>{{ item.description }}</p>
             {% if item.bullets %}
@@ -37,6 +42,11 @@
       <div class="grid grid-3">
         {% for bundle in services.bundles["items"] %}
           <article class="card">
+            {% if bundle.image %}
+              <div class="card-media">
+                <img src="{{ bundle.image }}" alt="{{ bundle.image_alt }}" loading="lazy" />
+              </div>
+            {% endif %}
             <h3>{{ bundle.title }}</h3>
             {% if bundle.price %}
               <div class="price">{{ bundle.price }}</div>

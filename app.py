@@ -78,6 +78,8 @@ def page_title(content: dict, page_key: str) -> str:
 @app.route("/")
 def home():
     content = load_content()
+    if should_use_mobile_alt(request):
+        return render_mobile_home(content)
     return render_template(
         "index.html",
         content=content,
@@ -85,6 +87,12 @@ def home():
         home=content["pages"]["home"],
         page_title=page_title(content, "home"),
     )
+
+
+@app.route("/mobile")
+def mobile_home():
+    content = load_content()
+    return render_mobile_home(content)
 
 
 @app.route("/services")
@@ -292,10 +300,42 @@ def update_content_from_form(content: dict, form: "MultiDict") -> dict:
     return content
 
 
+def render_mobile_home(content: dict):
+    return render_template(
+        "mobile_home.html",
+        content=content,
+        theme=content["site"]["colors"],
+        home=content["pages"]["home"],
+        page_title=page_title(content, "home"),
+        body_class="mobile-alt",
+        using_mobile_alt=True,
+    )
+
+
+def should_use_mobile_alt(req) -> bool:
+    if req.args.get("full") == "1":
+        return False
+    user_agent = (req.user_agent.string or "").lower()
+    if not user_agent:
+        return False
+    mobile_indicators = (
+        "iphone",
+        "android",
+        "ipad",
+        "mobile",
+        "ipod",
+        "windows phone",
+        "blackberry",
+    )
+    return any(indicator in user_agent for indicator in mobile_indicators)
+
+
 def parse_cards_with_bullets(form, prefix: str, include_price: bool = False) -> list[dict]:
     titles = form.getlist(f"{prefix}_title")
     descriptions = form.getlist(f"{prefix}_description")
     bullets_raw = form.getlist(f"{prefix}_bullets")
+    images = form.getlist(f"{prefix}_image")
+    image_alts = form.getlist(f"{prefix}_image_alt")
     prices = form.getlist(f"{prefix}_price") if include_price else []
     items: list[dict] = []
     for index, values in enumerate(zip(titles, descriptions, bullets_raw)):
@@ -304,6 +344,10 @@ def parse_cards_with_bullets(form, prefix: str, include_price: bool = False) -> 
         if not any([title, description, bullet_text, price]):
             continue
         entry = {"title": title, "description": description, "bullets": split_lines(bullet_text)}
+        image = images[index].strip() if index < len(images) else ""
+        image_alt = image_alts[index].strip() if index < len(image_alts) else ""
+        entry["image"] = image
+        entry["image_alt"] = image_alt
         if include_price:
             entry["price"] = price
         items.append(entry)
@@ -313,13 +357,24 @@ def parse_cards_with_bullets(form, prefix: str, include_price: bool = False) -> 
 def parse_cards(form, prefix: str) -> list[dict]:
     titles = form.getlist(f"{prefix}_title")
     descriptions = form.getlist(f"{prefix}_description")
+    images = form.getlist(f"{prefix}_image")
+    image_alts = form.getlist(f"{prefix}_image_alt")
     items: list[dict] = []
-    for title, description in zip(titles, descriptions):
+    for index, (title, description) in enumerate(zip(titles, descriptions)):
         title = title.strip()
         description = description.strip()
         if not any([title, description]):
             continue
-        items.append({"title": title, "description": description})
+        image = images[index].strip() if index < len(images) else ""
+        image_alt = image_alts[index].strip() if index < len(image_alts) else ""
+        items.append(
+            {
+                "title": title,
+                "description": description,
+                "image": image,
+                "image_alt": image_alt,
+            }
+        )
     return items
 
 

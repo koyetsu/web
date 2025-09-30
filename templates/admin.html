@@ -370,6 +370,12 @@
 
     <form method="post" class="admin-sections">
       <input type="hidden" name="action" value="update_content" />
+      <datalist id="media-options">
+        <option value=""></option>
+        {% for upload in uploads %}
+          <option value="/uploads/{{ upload }}">/uploads/{{ upload }}</option>
+        {% endfor %}
+      </datalist>
 
       <article class="section-card is-editing" data-section>
         <div class="section-toolbar">
@@ -499,7 +505,9 @@
             </label>
             <label>Hero CTA text <input type="text" name="home_hero_cta_text" value="{{ home.hero.cta_text }}" /></label>
             <label>Hero CTA link <input type="text" name="home_hero_cta_link" value="{{ home.hero.cta_link }}" /></label>
-            <label>Hero image path <input type="text" name="home_hero_image" value="{{ home.hero.image }}" /></label>
+            <label>Hero image path
+              <input type="text" name="home_hero_image" value="{{ home.hero.image }}" list="media-options" />
+            </label>
             <label>Hero image alt text <input type="text" name="home_hero_image_alt" value="{{ home.hero.image_alt }}" /></label>
           </div>
 
@@ -519,6 +527,23 @@
                   </div>
                   <label>Title <input type="text" name="home_what_we_print_title" value="{{ item.title }}" /></label>
                   <label>Description <textarea name="home_what_we_print_description">{{ item.description }}</textarea></label>
+                  <label>
+                    Card image (optional)
+                    <input
+                      type="text"
+                      name="home_what_we_print_image"
+                      value="{{ item.image | default('', true) }}"
+                      list="media-options"
+                    />
+                  </label>
+                  <label>
+                    Card image alt text
+                    <input
+                      type="text"
+                      name="home_what_we_print_image_alt"
+                      value="{{ item.image_alt | default('', true) }}"
+                    />
+                  </label>
                   <label>Bullet list (one per line)
                     <textarea name="home_what_we_print_bullets">{{ item.bullets | join('\n') }}</textarea>
                   </label>
@@ -535,6 +560,14 @@
               </div>
               <label>Title <input type="text" name="home_what_we_print_title" /></label>
               <label>Description <textarea name="home_what_we_print_description"></textarea></label>
+              <label>
+                Card image (optional)
+                <input type="text" name="home_what_we_print_image" list="media-options" />
+              </label>
+              <label>
+                Card image alt text
+                <input type="text" name="home_what_we_print_image_alt" />
+              </label>
               <label>Bullet list (one per line)
                 <textarea name="home_what_we_print_bullets"></textarea>
               </label>
@@ -557,6 +590,23 @@
                   </div>
                   <label>Title <input type="text" name="home_why_choose_title" value="{{ item.title }}" /></label>
                   <label>Description <textarea name="home_why_choose_description">{{ item.description }}</textarea></label>
+                  <label>
+                    Icon/image (optional)
+                    <input
+                      type="text"
+                      name="home_why_choose_image"
+                      value="{{ item.image | default('', true) }}"
+                      list="media-options"
+                    />
+                  </label>
+                  <label>
+                    Image alt text
+                    <input
+                      type="text"
+                      name="home_why_choose_image_alt"
+                      value="{{ item.image_alt | default('', true) }}"
+                    />
+                  </label>
                 </div>
               {% endfor %}
             </div>
@@ -570,6 +620,14 @@
               </div>
               <label>Title <input type="text" name="home_why_choose_title" /></label>
               <label>Description <textarea name="home_why_choose_description"></textarea></label>
+              <label>
+                Icon/image (optional)
+                <input type="text" name="home_why_choose_image" list="media-options" />
+              </label>
+              <label>
+                Image alt text
+                <input type="text" name="home_why_choose_image_alt" />
+              </label>
             </div>
           </template>
 
@@ -651,6 +709,23 @@
                   </div>
                   <label>Title <input type="text" name="services_capabilities_title" value="{{ item.title }}" /></label>
                   <label>Description <textarea name="services_capabilities_description">{{ item.description }}</textarea></label>
+                  <label>
+                    Feature image (optional)
+                    <input
+                      type="text"
+                      name="services_capabilities_image"
+                      value="{{ item.image | default('', true) }}"
+                      list="media-options"
+                    />
+                  </label>
+                  <label>
+                    Image alt text
+                    <input
+                      type="text"
+                      name="services_capabilities_image_alt"
+                      value="{{ item.image_alt | default('', true) }}"
+                    />
+                  </label>
                   <label>Bullet list (one per line)
                     <textarea name="services_capabilities_bullets">{{ item.bullets | join('\n') }}</textarea>
                   </label>
@@ -667,6 +742,14 @@
               </div>
               <label>Title <input type="text" name="services_capabilities_title" /></label>
               <label>Description <textarea name="services_capabilities_description"></textarea></label>
+              <label>
+                Feature image (optional)
+                <input type="text" name="services_capabilities_image" list="media-options" />
+              </label>
+              <label>
+                Image alt text
+                <input type="text" name="services_capabilities_image_alt" />
+              </label>
               <label>Bullet list (one per line)
                 <textarea name="services_capabilities_bullets"></textarea>
               </label>
@@ -690,6 +773,23 @@
                   <label>Title <input type="text" name="services_bundles_title" value="{{ item.title }}" /></label>
                   <label>Price <input type="text" name="services_bundles_price" value="{{ item.price }}" /></label>
                   <label>Description <textarea name="services_bundles_description">{{ item.description }}</textarea></label>
+                  <label>
+                    Bundle image (optional)
+                    <input
+                      type="text"
+                      name="services_bundles_image"
+                      value="{{ item.image | default('', true) }}"
+                      list="media-options"
+                    />
+                  </label>
+                  <label>
+                    Image alt text
+                    <input
+                      type="text"
+                      name="services_bundles_image_alt"
+                      value="{{ item.image_alt | default('', true) }}"
+                    />
+                  </label>
                   <label>Bullet list (one per line)
                     <textarea name="services_bundles_bullets">{{ item.bullets | join('\n') }}</textarea>
                   </label>
@@ -707,6 +807,14 @@
               <label>Title <input type="text" name="services_bundles_title" /></label>
               <label>Price <input type="text" name="services_bundles_price" /></label>
               <label>Description <textarea name="services_bundles_description"></textarea></label>
+              <label>
+                Bundle image (optional)
+                <input type="text" name="services_bundles_image" list="media-options" />
+              </label>
+              <label>
+                Image alt text
+                <input type="text" name="services_bundles_image_alt" />
+              </label>
               <label>Bullet list (one per line)
                 <textarea name="services_bundles_bullets"></textarea>
               </label>

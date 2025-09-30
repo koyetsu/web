@@ -1,0 +1,186 @@
+body.mobile-alt {
+  background: var(--white);
+  color: var(--text);
+}
+
+body.mobile-alt header,
+body.mobile-alt footer {
+  display: none;
+}
+
+body.mobile-alt main {
+  padding: 0;
+}
+
+.mobile-wrapper {
+  display: grid;
+  gap: 2rem;
+  padding: 1.5rem 1.25rem 3rem;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.mobile-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.mobile-branding {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.mobile-logo {
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: var(--primary-dark);
+}
+
+.mobile-tagline {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.mobile-desktop-link {
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 2px solid rgba(37, 99, 235, 0.25);
+  padding-bottom: 0.1rem;
+}
+
+.mobile-desktop-link:hover {
+  border-color: var(--primary);
+}
+
+.mobile-hero {
+  display: grid;
+  gap: 1rem;
+}
+
+.mobile-hero h1 {
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  margin: 0;
+  color: var(--primary-dark);
+}
+
+.mobile-hero p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.mobile-hero-image img {
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 18px 45px -32px rgba(15, 23, 42, 0.35);
+}
+
+.mobile-section {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.mobile-section h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--primary-dark);
+}
+
+.mobile-card-list {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.mobile-card-list.compact {
+  gap: 1rem;
+}
+
+.mobile-card {
+  background: rgba(241, 245, 249, 0.7);
+  border-radius: 18px;
+  padding: 1rem 1.1rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.mobile-card-media {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.mobile-card-media img {
+  width: 100%;
+  display: block;
+}
+
+.mobile-card-media.icon {
+  max-width: 72px;
+}
+
+.mobile-card-body h3 {
+  margin: 0 0 0.35rem 0;
+  font-size: 1.1rem;
+  color: var(--primary-dark);
+}
+
+.mobile-card-body p {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.mobile-card-body ul {
+  margin: 0.5rem 0 0 1rem;
+  padding: 0;
+  color: var(--muted);
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.mobile-section.testimonials blockquote {
+  margin: 0;
+  background: rgba(37, 99, 235, 0.05);
+  border-left: 4px solid var(--primary);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.mobile-section.testimonials cite {
+  font-style: normal;
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
+.mobile-cta-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.mobile-cta-grid strong {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.mobile-cta-grid ul {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.3rem;
+  color: var(--muted);
+}
+
+body.mobile-alt .primary-button {
+  justify-content: center;
+}
+
+@media (min-width: 520px) {
+  .mobile-cta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
