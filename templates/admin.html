@@ -483,9 +483,9 @@
               <dd>{{ home.hero.cta_text or '–' }}</dd>
             </dl>
             <ul class="preview-list">
-              <li>{{ home.what_we_print.title }} ({{ home.what_we_print.items | length }} cards)</li>
-              <li>{{ home.why_choose.title }} ({{ home.why_choose.items | length }} highlights)</li>
-              <li>{{ home.testimonials.title }} ({{ home.testimonials.items | length }} quotes)</li>
+              <li>{{ home['what_we_print'].title }} ({{ home['what_we_print']['items'] | length }} cards)</li>
+              <li>{{ home['why_choose'].title }} ({{ home['why_choose']['items'] | length }} highlights)</li>
+              <li>{{ home['testimonials'].title }} ({{ home['testimonials']['items'] | length }} quotes)</li>
             </ul>
           </div>
         </div>
@@ -622,8 +622,8 @@
               <dd>{{ services.hero.title }}</dd>
             </dl>
             <ul class="preview-list">
-              <li>{{ services.capabilities.title }} ({{ services.capabilities.items | length }} capabilities)</li>
-              <li>{{ services.bundles.title }} ({{ services.bundles.items | length }} bundles)</li>
+              <li>{{ services['capabilities'].title }} ({{ services['capabilities']['items'] | length }} capabilities)</li>
+              <li>{{ services['bundles'].title }} ({{ services['bundles']['items'] | length }} bundles)</li>
               <li>{{ services.process.title }} ({{ services.process.steps | length }} steps)</li>
             </ul>
           </div>
