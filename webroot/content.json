@@ -1,0 +1,290 @@
+{
+  "site": {
+    "name": "BlueWave Print Studio",
+    "tagline": "Local print experts serving the Coastal Bend",
+    "navigation": [
+      { "label": "Home", "url": "/" },
+      { "label": "Services", "url": "/services" },
+      { "label": "Contact & About", "url": "/contact" }
+    ],
+    "colors": {
+      "primary": "#1d4ed8",
+      "primary_dark": "#1e40af",
+      "accent": "#f59e0b",
+      "background": "#f8fafc",
+      "text": "#1f2937",
+      "muted": "#64748b"
+    },
+    "footer": {
+      "description": "Modern print craftsmanship from a locally owned team serving the Coastal Bend for over 25 years.",
+      "visit": {
+        "title": "Visit",
+        "lines": [
+          "1432 Shoreline Blvd",
+          "Corpus Christi, TX 78401",
+          "Mon–Fri: 8:30a – 6:00p"
+        ]
+      },
+      "contact": {
+        "title": "Contact",
+        "lines": [
+          { "label": "(361) 555-0198", "url": "tel:13615550198" },
+          { "label": "hello@bluewaveprint.com", "url": "mailto:hello@bluewaveprint.com" },
+          { "label": "Start a project →", "url": "/contact" }
+        ]
+      },
+      "copyright": "All rights reserved."
+    }
+  },
+  "pages": {
+    "home": {
+      "meta": { "title": "Local Print Experts" },
+      "hero": {
+        "badge": "Locally owned • Est. 1998",
+        "title": "Modern printing crafted for businesses that move fast",
+        "description": "BlueWave Print Studio delivers vibrant marketing materials, custom packaging, and signage with turnaround times tailored for growing businesses in the Coastal Bend.",
+        "cta_text": "Explore Services →",
+        "cta_link": "/services",
+        "image": "",
+        "image_alt": ""
+      },
+      "what_we_print": {
+        "title": "What we print every day",
+        "items": [
+          {
+            "title": "Premium Marketing Collateral",
+            "description": "Brochures, business cards, presentation folders, and mailers that match your brand colors with edge-to-edge precision.",
+            "bullets": [
+              "Next-day rush available",
+              "Soft-touch and matte finishes",
+              "Design assistance included"
+            ]
+          },
+          {
+            "title": "Large Format Signage",
+            "description": "Banners, trade show displays, and window graphics engineered to stand up to Gulf Coast weather and sunlight.",
+            "bullets": [
+              "UV-resistant inks",
+              "Indoor & outdoor mounting options",
+              "Installation support"
+            ]
+          },
+          {
+            "title": "Custom Packaging & Labels",
+            "description": "Short-run packaging, labels, and stickers that keep small-batch products looking professional and shelf-ready.",
+            "bullets": [
+              "Low minimum quantities",
+              "Eco-friendly substrates",
+              "Variable data personalization"
+            ]
+          }
+        ]
+      },
+      "why_choose": {
+        "title": "Why Coastal businesses choose BlueWave",
+        "items": [
+          {
+            "title": "Real humans, rapid answers",
+            "description": "Call or text our production team directly. Receive proofs, updates, and timelines without waiting in a ticket queue."
+          },
+          {
+            "title": "Technology built for speed",
+            "description": "We invest in digital presses and wide-format printers that keep projects moving—most orders are fulfilled within 48 hours."
+          },
+          {
+            "title": "Delivery that saves you time",
+            "description": "Complimentary delivery within 20 miles of Corpus Christi and coordinated shipping for statewide accounts."
+          }
+        ]
+      },
+      "testimonials": {
+        "title": "Client stories",
+        "items": [
+          {
+            "quote": "“BlueWave transformed our event experience. They produced a full suite of signage and handouts in under three days, and the color accuracy was perfect.”",
+            "author": "— Maya Flores, Harbor City Chamber"
+          },
+          {
+            "quote": "“Our product packaging looks like a national brand now. Their team sourced sustainable materials and delivered an unboxing experience customers rave about.”",
+            "author": "— Ruben Ortiz, Gulf Harvest Coffee"
+          },
+          {
+            "quote": "“From first draft to final print, BlueWave communicates clearly. Their delivery service means we never have to leave the shop to get materials.”",
+            "author": "— Leah Thompson, Seabreeze Florals"
+          }
+        ]
+      }
+    },
+    "services": {
+      "meta": { "title": "Print Services" },
+      "hero": {
+        "badge": "Fast timelines • Expert finishing",
+        "title": "Services engineered to make your brand look its best",
+        "description": "From single-run brochures to multi-location campaigns, BlueWave offers full-service printing, finishing, and delivery tailored to small and mid-sized businesses."
+      },
+      "capabilities": {
+        "title": "Core print capabilities",
+        "items": [
+          {
+            "title": "Digital & Offset Printing",
+            "description": "Ultra-crisp color reproduction for marketing collateral, booklets, and stationery with turnaround as fast as 24 hours.",
+            "bullets": [
+              "Full bleed and specialty finishes",
+              "Mailing and fulfillment support",
+              "Variable data personalization"
+            ]
+          },
+          {
+            "title": "Wide Format & Signage",
+            "description": "Durable banners, wall murals, floor graphics, and trade show booths produced with weather-resistant inks and lamination.",
+            "bullets": [
+              "On-site surveys & installation",
+              "Fabric, vinyl, and mesh materials",
+              "Backlit and dimensional signage"
+            ]
+          },
+          {
+            "title": "Packaging & Labels",
+            "description": "Custom dielines, short-run folding cartons, and pressure-sensitive labels that highlight artisanal and specialty products.",
+            "bullets": [
+              "Eco-friendly and textured stocks",
+              "Low minimum orders",
+              "Shrink sleeves & tamper seals"
+            ]
+          }
+        ]
+      },
+      "bundles": {
+        "title": "Popular service bundles",
+        "items": [
+          {
+            "title": "Launch Kit",
+            "price": "$685",
+            "description": "Everything a new business needs to look polished at first impression.",
+            "bullets": [
+              "500 business cards with soft-touch finish",
+              "250 tri-fold brochures",
+              "Storefront vinyl banner and window decal"
+            ]
+          },
+          {
+            "title": "Event Spotlight",
+            "price": "$1,140",
+            "description": "Turn heads at expos, conferences, and local festivals with cohesive visuals.",
+            "bullets": [
+              "10 ft. tension fabric display",
+              "Two retractable banners",
+              "500 full-color postcards"
+            ]
+          },
+          {
+            "title": "Retail Refresh",
+            "price": "$1,980",
+            "description": "Seasonal signage and packaging updates to keep your shelves fresh and on-brand.",
+            "bullets": [
+              "Custom shelf talkers & wobblers",
+              "1,000 product labels with spot UV",
+              "Exterior storefront signage update"
+            ]
+          }
+        ]
+      },
+      "process": {
+        "title": "How we deliver every project",
+        "steps": [
+          {
+            "title": "1. Discover & scope",
+            "description": "We review your brand assets, specs, and timeline to recommend materials that balance impact and budget."
+          },
+          {
+            "title": "2. Proof & produce",
+            "description": "Receive digital or physical proofs within 24 hours. After approval, our production team manages print and finishing in-house."
+          },
+          {
+            "title": "3. Deliver & support",
+            "description": "Complimentary local delivery, optional installation, and reorder reminders keep your marketing running smoothly."
+          }
+        ],
+        "cta": {
+          "title": "Need something unique?",
+          "description": "Our team can source specialty substrates, manage warehousing, or build custom storefronts for franchise networks.",
+          "text": "Talk with a specialist →",
+          "link": "/contact"
+        }
+      }
+    },
+    "contact": {
+      "meta": { "title": "Contact BlueWave Print Studio" },
+      "hero": {
+        "badge": "We answer within one business hour",
+        "title": "Let’s bring your next print idea to life",
+        "description": "Reach out for project estimates, design consultations, or a quick proof review. Our in-house specialists are ready to support every step, from concept through delivery."
+      },
+      "studio": {
+        "visit_title": "Visit the studio",
+        "address": [
+          "1432 Shoreline Blvd",
+          "Corpus Christi, TX 78401"
+        ],
+        "hours_title": "Hours",
+        "hours": [
+          "Monday – Friday: 8:30a – 6:00p",
+          "Saturday: By appointment"
+        ],
+        "phone_title": "Call or text",
+        "phone": "(361) 555-0198",
+        "phone_href": "13615550198",
+        "email_title": "Email",
+        "email": "hello@bluewaveprint.com"
+      },
+      "form": {
+        "title": "Start a project",
+        "submit_text": "Request quote →",
+        "fields": [
+          {
+            "label": "Name",
+            "name": "name",
+            "type": "text",
+            "placeholder": "Jordan Smith"
+          },
+          {
+            "label": "Company",
+            "name": "company",
+            "type": "text",
+            "placeholder": "Harbor City Outfitters"
+          },
+          {
+            "label": "Email",
+            "name": "email",
+            "type": "email",
+            "placeholder": "you@example.com"
+          },
+          {
+            "label": "Project details",
+            "name": "details",
+            "type": "textarea",
+            "placeholder": "Tell us about quantities, sizes, deadlines, and finishing needs."
+          }
+        ]
+      },
+      "about": {
+        "title": "About BlueWave Print Studio",
+        "description": "Founded in 1998 by lifelong Corpus Christi residents Ana and Mateo Castillo, BlueWave Print Studio started as a small-format print shop helping neighborhood schools and non-profits. Today, our 12-person team pairs design-forward thinking with state-of-the-art production technology to deliver consistent, color-accurate results for businesses across South Texas.",
+        "cards": [
+          {
+            "title": "Community roots",
+            "description": "We reinvest 5% of annual profits into local art programs, youth sports, and beach cleanups."
+          },
+          {
+            "title": "Certified sustainability",
+            "description": "BlueWave is FSC®-certified and offers recycled, post-consumer paper stocks for every product line."
+          },
+          {
+            "title": "Partners in growth",
+            "description": "From branding refreshes to multi-location signage rollouts, we serve as a dedicated print partner for 200+ area businesses."
+          }
+        ]
+      }
+    }
+  }
+}

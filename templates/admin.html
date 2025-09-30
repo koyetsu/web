@@ -1,0 +1,578 @@
+{% extends 'base.html' %}
+{% block extra_head %}
+  <style>
+    .admin-dashboard {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 2.5rem;
+      padding: 2rem 1.5rem 4rem;
+    }
+    .admin-dashboard h1 {
+      margin-bottom: 0.5rem;
+    }
+    .admin-grid {
+      display: grid;
+      gap: 2rem;
+    }
+    .form-section {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 20px 50px -35px rgba(15, 23, 42, 0.2);
+      display: grid;
+      gap: 1.5rem;
+    }
+    .form-section h2 {
+      margin: 0;
+      font-size: 1.3rem;
+      color: var(--primary-dark);
+    }
+    .form-fields {
+      display: grid;
+      gap: 1rem;
+    }
+    .form-fields label {
+      display: grid;
+      gap: 0.4rem;
+      font-weight: 600;
+    }
+    .form-fields input,
+    .form-fields textarea,
+    .form-fields select {
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(100, 116, 139, 0.25);
+      font: inherit;
+      resize: vertical;
+    }
+    .form-fields textarea {
+      min-height: 100px;
+    }
+    .collection {
+      display: grid;
+      gap: 1rem;
+    }
+    .collection-item {
+      border: 1px solid rgba(100, 116, 139, 0.2);
+      border-radius: 16px;
+      padding: 1rem;
+      display: grid;
+      gap: 0.75rem;
+      background: rgba(248, 250, 252, 0.6);
+    }
+    .collection-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .collection-item button.remove-item {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .admin-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .admin-actions button {
+      padding-inline: 2.25rem;
+    }
+    .alert {
+      background: rgba(34, 197, 94, 0.12);
+      color: #15803d;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+    .image-grid figure {
+      border: 1px solid rgba(100, 116, 139, 0.2);
+      border-radius: 14px;
+      padding: 1rem;
+      background: #ffffff;
+      display: grid;
+      gap: 0.5rem;
+      justify-items: center;
+    }
+    .image-grid img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    .color-inputs {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    .color-inputs label {
+      align-items: center;
+      grid-template-columns: 1fr auto;
+    }
+    .color-inputs input[type='color'] {
+      width: 52px;
+      height: 36px;
+      padding: 0;
+      border: none;
+      background: none;
+    }
+    .file-note {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+{% endblock %}
+{% block content %}
+  <section class="admin-dashboard">
+    <div>
+      <h1>Content management</h1>
+      <p>Update page copy, theme colors, and upload media. Changes are saved to <code>{{ webroot_path }}/content.json</code>.</p>
+      {% if message %}
+        <div class="alert">{{ message }}</div>
+      {% endif %}
+    </div>
+
+    <form method="post" class="admin-grid">
+      <input type="hidden" name="action" value="update_content" />
+      <div class="form-section">
+        <h2>Site identity &amp; theme</h2>
+        <div class="form-fields">
+          <label>
+            Business name
+            <input type="text" name="site_name" value="{{ content.site.name }}" required />
+          </label>
+          <label>
+            Tagline
+            <input type="text" name="site_tagline" value="{{ content.site.tagline }}" />
+          </label>
+        </div>
+        <div class="form-fields">
+          <label>
+            Footer description
+            <textarea name="footer_description">{{ content.site.footer.description }}</textarea>
+          </label>
+        </div>
+        <div class="color-inputs">
+          <label>
+            Primary
+            <input type="color" name="color_primary" value="{{ content.site.colors.primary }}" />
+          </label>
+          <label>
+            Primary (dark)
+            <input type="color" name="color_primary_dark" value="{{ content.site.colors.primary_dark }}" />
+          </label>
+          <label>
+            Accent
+            <input type="color" name="color_accent" value="{{ content.site.colors.accent }}" />
+          </label>
+          <label>
+            Background
+            <input type="color" name="color_background" value="{{ content.site.colors.background }}" />
+          </label>
+          <label>
+            Text
+            <input type="color" name="color_text" value="{{ content.site.colors.text }}" />
+          </label>
+          <label>
+            Muted text
+            <input type="color" name="color_muted" value="{{ content.site.colors.muted }}" />
+          </label>
+        </div>
+        <div class="form-fields">
+          <label>
+            Footer visit lines (one per row)
+            <textarea name="footer_visit_lines">{{ content.site.footer.visit.lines | join('\n') }}</textarea>
+          </label>
+          <label>
+            Footer contact lines (Label|URL — leave URL empty for plain text)
+            <textarea name="footer_contact_lines">{% for line in content.site.footer.contact.lines %}{{ line.label }}{% if line.url %}|{{ line.url }}{% endif %}{% if not loop.last %}
+{% endif %}{% endfor %}</textarea>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Home page</h2>
+        <div class="form-fields">
+          <label>Hero badge <input type="text" name="home_hero_badge" value="{{ home.hero.badge }}" /></label>
+          <label>Hero title <input type="text" name="home_hero_title" value="{{ home.hero.title }}" /></label>
+          <label>
+            Hero description
+            <textarea name="home_hero_description">{{ home.hero.description }}</textarea>
+          </label>
+          <label>Hero CTA text <input type="text" name="home_hero_cta_text" value="{{ home.hero.cta_text }}" /></label>
+          <label>Hero CTA link <input type="text" name="home_hero_cta_link" value="{{ home.hero.cta_link }}" /></label>
+          <label>Hero image path <input type="text" name="home_hero_image" value="{{ home.hero.image }}" /></label>
+          <label>Hero image alt text <input type="text" name="home_hero_image_alt" value="{{ home.hero.image_alt }}" /></label>
+        </div>
+
+        <h3>{{ home.what_we_print.title }}</h3>
+        <div class="form-fields">
+          <label>Section title
+            <input type="text" name="home_what_we_print_heading" value="{{ home.what_we_print.title }}" />
+          </label>
+        </div>
+        <div class="collection" data-collection="home_what_we_print">
+          {% for item in home.what_we_print.items %}
+            <div class="collection-item">
+              <div class="collection-item-header">
+                <strong>Card {{ loop.index }}</strong>
+                <button type="button" class="remove-item">Remove</button>
+              </div>
+              <label>Title <input type="text" name="home_what_we_print_title" value="{{ item.title }}" /></label>
+              <label>Description <textarea name="home_what_we_print_description">{{ item.description }}</textarea></label>
+              <label>Bullet list (one per line)
+                <textarea name="home_what_we_print_bullets">{{ item.bullets | join('\n') }}</textarea>
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="primary-button add-item" data-template="home_what_we_print_template">Add card</button>
+        <template id="home_what_we_print_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New card</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="home_what_we_print_title" /></label>
+            <label>Description <textarea name="home_what_we_print_description"></textarea></label>
+            <label>Bullet list (one per line)
+              <textarea name="home_what_we_print_bullets"></textarea>
+            </label>
+          </div>
+        </template>
+
+        <h3>{{ home.why_choose.title }}</h3>
+        <div class="form-fields">
+          <label>Section title
+            <input type="text" name="home_why_choose_heading" value="{{ home.why_choose.title }}" />
+          </label>
+        </div>
+        <div class="collection" data-collection="home_why_choose">
+          {% for item in home.why_choose.items %}
+            <div class="collection-item">
+              <div class="collection-item-header">
+                <strong>Card {{ loop.index }}</strong>
+                <button type="button" class="remove-item">Remove</button>
+              </div>
+              <label>Title <input type="text" name="home_why_choose_title" value="{{ item.title }}" /></label>
+              <label>Description <textarea name="home_why_choose_description">{{ item.description }}</textarea></label>
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="primary-button add-item" data-template="home_why_choose_template">Add card</button>
+        <template id="home_why_choose_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New card</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="home_why_choose_title" /></label>
+            <label>Description <textarea name="home_why_choose_description"></textarea></label>
+          </div>
+        </template>
+
+        <h3>{{ home.testimonials.title }}</h3>
+        <div class="form-fields">
+          <label>Section title
+            <input type="text" name="home_testimonials_heading" value="{{ home.testimonials.title }}" />
+          </label>
+        </div>
+        <div class="collection" data-collection="home_testimonials">
+          {% for item in home.testimonials.items %}
+            <div class="collection-item">
+              <div class="collection-item-header">
+                <strong>Testimonial {{ loop.index }}</strong>
+                <button type="button" class="remove-item">Remove</button>
+              </div>
+              <label>Quote <textarea name="home_testimonials_quote">{{ item.quote }}</textarea></label>
+              <label>Attribution <input type="text" name="home_testimonials_author" value="{{ item.author }}" /></label>
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="primary-button add-item" data-template="home_testimonials_template">Add testimonial</button>
+        <template id="home_testimonials_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New testimonial</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Quote <textarea name="home_testimonials_quote"></textarea></label>
+            <label>Attribution <input type="text" name="home_testimonials_author" /></label>
+          </div>
+        </template>
+      </div>
+
+      <div class="form-section">
+        <h2>Services page</h2>
+        <div class="form-fields">
+          <label>Hero badge <input type="text" name="services_hero_badge" value="{{ services.hero.badge }}" /></label>
+          <label>Hero title <input type="text" name="services_hero_title" value="{{ services.hero.title }}" /></label>
+          <label>Hero description <textarea name="services_hero_description">{{ services.hero.description }}</textarea></label>
+        </div>
+
+        <h3>{{ services.capabilities.title }}</h3>
+        <div class="form-fields">
+          <label>Section title
+            <input type="text" name="services_capabilities_heading" value="{{ services.capabilities.title }}" />
+          </label>
+        </div>
+        <div class="collection" data-collection="services_capabilities">
+          {% for item in services.capabilities.items %}
+            <div class="collection-item">
+              <div class="collection-item-header">
+                <strong>Capability {{ loop.index }}</strong>
+                <button type="button" class="remove-item">Remove</button>
+              </div>
+              <label>Title <input type="text" name="services_capabilities_title" value="{{ item.title }}" /></label>
+              <label>Description <textarea name="services_capabilities_description">{{ item.description }}</textarea></label>
+              <label>Bullet list (one per line)
+                <textarea name="services_capabilities_bullets">{{ item.bullets | join('\n') }}</textarea>
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="primary-button add-item" data-template="services_capabilities_template">Add capability</button>
+        <template id="services_capabilities_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New capability</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="services_capabilities_title" /></label>
+            <label>Description <textarea name="services_capabilities_description"></textarea></label>
+            <label>Bullet list (one per line)
+              <textarea name="services_capabilities_bullets"></textarea>
+            </label>
+          </div>
+        </template>
+
+        <h3>{{ services.bundles.title }}</h3>
+        <div class="form-fields">
+          <label>Section title
+            <input type="text" name="services_bundles_heading" value="{{ services.bundles.title }}" />
+          </label>
+        </div>
+        <div class="collection" data-collection="services_bundles">
+          {% for item in services.bundles.items %}
+            <div class="collection-item">
+              <div class="collection-item-header">
+                <strong>Bundle {{ loop.index }}</strong>
+                <button type="button" class="remove-item">Remove</button>
+              </div>
+              <label>Title <input type="text" name="services_bundles_title" value="{{ item.title }}" /></label>
+              <label>Price <input type="text" name="services_bundles_price" value="{{ item.price }}" /></label>
+              <label>Description <textarea name="services_bundles_description">{{ item.description }}</textarea></label>
+              <label>Bullet list (one per line)
+                <textarea name="services_bundles_bullets">{{ item.bullets | join('\n') }}</textarea>
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="primary-button add-item" data-template="services_bundles_template">Add bundle</button>
+        <template id="services_bundles_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New bundle</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="services_bundles_title" /></label>
+            <label>Price <input type="text" name="services_bundles_price" /></label>
+            <label>Description <textarea name="services_bundles_description"></textarea></label>
+            <label>Bullet list (one per line)
+              <textarea name="services_bundles_bullets"></textarea>
+            </label>
+          </div>
+        </template>
+
+        <h3>{{ services.process.title }}</h3>
+        <div class="form-fields">
+          <label>Section title
+            <input type="text" name="services_process_heading" value="{{ services.process.title }}" />
+          </label>
+        </div>
+        <div class="collection" data-collection="services_process">
+          {% for item in services.process.steps %}
+            <div class="collection-item">
+              <div class="collection-item-header">
+                <strong>Step {{ loop.index }}</strong>
+                <button type="button" class="remove-item">Remove</button>
+              </div>
+              <label>Title <input type="text" name="services_process_title" value="{{ item.title }}" /></label>
+              <label>Description <textarea name="services_process_description">{{ item.description }}</textarea></label>
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="primary-button add-item" data-template="services_process_template">Add step</button>
+        <template id="services_process_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New step</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="services_process_title" /></label>
+            <label>Description <textarea name="services_process_description"></textarea></label>
+          </div>
+        </template>
+        <div class="form-fields">
+          <label>Process CTA title <input type="text" name="services_process_cta_title" value="{{ services.process.cta.title }}" /></label>
+          <label>Process CTA description <textarea name="services_process_cta_description">{{ services.process.cta.description }}</textarea></label>
+          <label>Process CTA button text <input type="text" name="services_process_cta_text" value="{{ services.process.cta.text }}" /></label>
+          <label>Process CTA link <input type="text" name="services_process_cta_link" value="{{ services.process.cta.link }}" /></label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Contact page</h2>
+        <div class="form-fields">
+          <label>Hero badge <input type="text" name="contact_hero_badge" value="{{ contact.hero.badge }}" /></label>
+          <label>Hero title <input type="text" name="contact_hero_title" value="{{ contact.hero.title }}" /></label>
+          <label>Hero description <textarea name="contact_hero_description">{{ contact.hero.description }}</textarea></label>
+        </div>
+        <div class="form-fields">
+          <label>Visit title <input type="text" name="contact_visit_title" value="{{ contact.studio.visit_title }}" /></label>
+          <label>Address (one line per row)
+            <textarea name="contact_address_lines">{{ contact.studio.address | join('\n') }}</textarea>
+          </label>
+          <label>Hours title <input type="text" name="contact_hours_title" value="{{ contact.studio.hours_title }}" /></label>
+          <label>Hours (one line per row)
+            <textarea name="contact_hours_lines">{{ contact.studio.hours | join('\n') }}</textarea>
+          </label>
+          <label>Phone label <input type="text" name="contact_phone_title" value="{{ contact.studio.phone_title }}" /></label>
+          <label>Phone number <input type="text" name="contact_phone" value="{{ contact.studio.phone }}" /></label>
+          <label>Phone link (digits only) <input type="text" name="contact_phone_href" value="{{ contact.studio.phone_href }}" /></label>
+          <label>Email label <input type="text" name="contact_email_title" value="{{ contact.studio.email_title }}" /></label>
+          <label>Email address <input type="email" name="contact_email" value="{{ contact.studio.email }}" /></label>
+        </div>
+        <div class="form-fields">
+          <label>Form title <input type="text" name="contact_form_title" value="{{ contact.form.title }}" /></label>
+          <label>Form submit text <input type="text" name="contact_form_submit" value="{{ contact.form.submit_text }}" /></label>
+        </div>
+        <div class="collection" data-collection="contact_form_fields">
+          {% for field in contact.form.fields %}
+            <div class="collection-item">
+              <div class="collection-item-header">
+                <strong>Field {{ loop.index }}</strong>
+                <button type="button" class="remove-item">Remove</button>
+              </div>
+              <label>Label <input type="text" name="contact_form_label" value="{{ field.label }}" /></label>
+              <label>Name <input type="text" name="contact_form_name" value="{{ field.name }}" /></label>
+              <label>Type
+                <select name="contact_form_type">
+                  <option value="text" {% if field.type == 'text' %}selected{% endif %}>Text</option>
+                  <option value="email" {% if field.type == 'email' %}selected{% endif %}>Email</option>
+                  <option value="textarea" {% if field.type == 'textarea' %}selected{% endif %}>Textarea</option>
+                </select>
+              </label>
+              <label>Placeholder <input type="text" name="contact_form_placeholder" value="{{ field.placeholder }}" /></label>
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="primary-button add-item" data-template="contact_form_template">Add field</button>
+        <template id="contact_form_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New field</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Label <input type="text" name="contact_form_label" /></label>
+            <label>Name <input type="text" name="contact_form_name" /></label>
+            <label>Type
+              <select name="contact_form_type">
+                <option value="text">Text</option>
+                <option value="email">Email</option>
+                <option value="textarea">Textarea</option>
+              </select>
+            </label>
+            <label>Placeholder <input type="text" name="contact_form_placeholder" /></label>
+          </div>
+        </template>
+
+        <h3>{{ contact.about.title }}</h3>
+        <label>About title <input type="text" name="contact_about_title" value="{{ contact.about.title }}" /></label>
+        <label>About description <textarea name="contact_about_description">{{ contact.about.description }}</textarea></label>
+        <div class="collection" data-collection="contact_about_cards">
+          {% for card in contact.about.cards %}
+            <div class="collection-item">
+              <div class="collection-item-header">
+                <strong>Card {{ loop.index }}</strong>
+                <button type="button" class="remove-item">Remove</button>
+              </div>
+              <label>Title <input type="text" name="contact_about_title_item" value="{{ card.title }}" /></label>
+              <label>Description <textarea name="contact_about_description_item">{{ card.description }}</textarea></label>
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="primary-button add-item" data-template="contact_about_template">Add card</button>
+        <template id="contact_about_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New card</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="contact_about_title_item" /></label>
+            <label>Description <textarea name="contact_about_description_item"></textarea></label>
+          </div>
+        </template>
+      </div>
+
+      <div class="admin-actions">
+        <button class="primary-button" type="submit">Save changes</button>
+      </div>
+    </form>
+
+    <div class="form-section">
+      <h2>Media library</h2>
+      <form method="post" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="upload_media" />
+        <div class="form-fields">
+          <label>Upload image
+            <input type="file" name="media" accept="image/*" />
+          </label>
+          <div class="file-note">Files are stored in <code>{{ webroot_path }}/uploads</code> and can be referenced by using <code>/uploads/&lt;filename&gt;</code> in image fields.</div>
+          <button class="primary-button" type="submit">Upload file</button>
+        </div>
+      </form>
+      {% if uploads %}
+        <div class="image-grid">
+          {% for file in uploads %}
+            <figure>
+              <img src="{{ url_for('uploaded_file', filename=file) }}" alt="{{ file }}" />
+              <figcaption>/uploads/{{ file }}</figcaption>
+            </figure>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>No images uploaded yet.</p>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}
+{% block extra_scripts %}
+  <script>
+    document.querySelectorAll('.add-item').forEach((button) => {
+      button.addEventListener('click', () => {
+        const template = document.getElementById(button.dataset.template);
+        const clone = template.content.firstElementChild.cloneNode(true);
+        const collection = button.previousElementSibling;
+        collection.appendChild(clone);
+        attachRemoveHandlers(clone);
+      });
+    });
+
+    function attachRemoveHandlers(scope = document) {
+      scope.querySelectorAll('.remove-item').forEach((button) => {
+        button.addEventListener('click', () => {
+          const item = button.closest('.collection-item');
+          item?.remove();
+        });
+      });
+    }
+
+    attachRemoveHandlers();
+  </script>
+{% endblock %}

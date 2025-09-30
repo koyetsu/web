@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ page_title }} | {{ content.site.name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+    <style>
+      :root {
+        --primary: {{ theme.primary }};
+        --primary-dark: {{ theme.primary_dark }};
+        --accent: {{ theme.accent }};
+        --bg: {{ theme.background }};
+        --text: {{ theme.text }};
+        --muted: {{ theme.muted }};
+        --white: #ffffff;
+        --max-width: 1100px;
+      }
+    </style>
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <header>
+      <div class="navbar">
+        <a class="logo" href="{{ url_for('home') }}">{{ content.site.name }}</a>
+        <nav>
+          <ul>
+            {% for item in content.site.navigation %}
+              <li>
+                <a
+                  href="{{ item.url }}"
+                  class="{% if request.path == item.url %}active{% endif %}"
+                  >{{ item.label }}</a
+                >
+              </li>
+            {% endfor %}
+            <li>
+              <a
+                href="{{ url_for('admin_dashboard') }}"
+                class="admin-link {% if request.path.startswith('/admin') %}active{% endif %}"
+                >Admin</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+      <div class="footer-content">
+        <div>
+          <div class="footer-logo">{{ content.site.name }}</div>
+          <p>{{ content.site.footer.description }}</p>
+        </div>
+        <div>
+          <strong>{{ content.site.footer.visit.title }}</strong>
+          <ul class="list-reset">
+            {% for line in content.site.footer.visit.lines %}
+              <li>{{ line }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div>
+          <strong>{{ content.site.footer.contact.title }}</strong>
+          <ul class="list-reset">
+            {% for line in content.site.footer.contact.lines %}
+              <li>
+                {% if line.url %}
+                  <a href="{{ line.url }}">{{ line.label }}</a>
+                {% else %}
+                  {{ line.label }}
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © <span id="year"></span> {{ content.site.name }}. {{ content.site.footer.copyright }}
+      </div>
+    </footer>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+    {% block extra_scripts %}{% endblock %}
+  </body>
+</html>
