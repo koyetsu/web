@@ -217,7 +217,7 @@
           </label>
         </div>
         <div class="collection" data-collection="home_what_we_print">
-          {% for item in home.what_we_print.items %}
+          {% for item in home.what_we_print["items"] %}
             <div class="collection-item">
               <div class="collection-item-header">
                 <strong>Card {{ loop.index }}</strong>
@@ -253,7 +253,7 @@
           </label>
         </div>
         <div class="collection" data-collection="home_why_choose">
-          {% for item in home.why_choose.items %}
+          {% for item in home.why_choose["items"] %}
             <div class="collection-item">
               <div class="collection-item-header">
                 <strong>Card {{ loop.index }}</strong>
@@ -283,7 +283,7 @@
           </label>
         </div>
         <div class="collection" data-collection="home_testimonials">
-          {% for item in home.testimonials.items %}
+          {% for item in home.testimonials["items"] %}
             <div class="collection-item">
               <div class="collection-item-header">
                 <strong>Testimonial {{ loop.index }}</strong>
@@ -322,7 +322,7 @@
           </label>
         </div>
         <div class="collection" data-collection="services_capabilities">
-          {% for item in services.capabilities.items %}
+          {% for item in services.capabilities["items"] %}
             <div class="collection-item">
               <div class="collection-item-header">
                 <strong>Capability {{ loop.index }}</strong>
@@ -358,7 +358,7 @@
           </label>
         </div>
         <div class="collection" data-collection="services_bundles">
-          {% for item in services.bundles.items %}
+          {% for item in services.bundles["items"] %}
             <div class="collection-item">
               <div class="collection-item-header">
                 <strong>Bundle {{ loop.index }}</strong>

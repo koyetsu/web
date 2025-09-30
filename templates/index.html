@@ -20,7 +20,7 @@
     <div class="grid">
       <h2>{{ home.what_we_print.title }}</h2>
       <div class="grid grid-3">
-        {% for item in home.what_we_print.items %}
+        {% for item in home.what_we_print["items"] %}
           <article class="card">
             <h3>{{ item.title }}</h3>
             <p>{{ item.description }}</p>
@@ -41,7 +41,7 @@
     <div class="grid">
       <h2>{{ home.why_choose.title }}</h2>
       <div class="grid grid-3">
-        {% for item in home.why_choose.items %}
+        {% for item in home.why_choose["items"] %}
           <article class="card">
             <h3>{{ item.title }}</h3>
             <p>{{ item.description }}</p>
@@ -55,7 +55,7 @@
     <div class="grid">
       <h2>{{ home.testimonials.title }}</h2>
       <div class="grid grid-3">
-        {% for testimonial in home.testimonials.items %}
+        {% for testimonial in home.testimonials["items"] %}
           <article class="card testimonial">
             <p>{{ testimonial.quote }}</p>
             <cite>{{ testimonial.author }}</cite>

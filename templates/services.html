@@ -14,7 +14,7 @@
     <div class="grid">
       <h2>{{ services.capabilities.title }}</h2>
       <div class="grid grid-3">
-        {% for item in services.capabilities.items %}
+        {% for item in services.capabilities["items"] %}
           <article class="card">
             <h3>{{ item.title }}</h3>
             <p>{{ item.description }}</p>
@@ -35,7 +35,7 @@
     <div class="grid">
       <h2>{{ services.bundles.title }}</h2>
       <div class="grid grid-3">
-        {% for bundle in services.bundles.items %}
+        {% for bundle in services.bundles["items"] %}
           <article class="card">
             <h3>{{ bundle.title }}</h3>
             {% if bundle.price %}
