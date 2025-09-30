@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import shutil
@@ -21,7 +22,8 @@ WEBROOT_PATH = Path(os.environ.get("WEBROOT_PATH", DEFAULT_WEBROOT))
 CONTENT_FILE = WEBROOT_PATH / "content.json"
 UPLOAD_FOLDER = WEBROOT_PATH / "uploads"
 
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "printstudio")
+ADMIN_PASSWORD_FILE = WEBROOT_PATH / "admin_password.txt"
+DEFAULT_ADMIN_PASSWORD = "printstudio"
 SECRET_KEY = os.environ.get("SECRET_KEY", "change-me-please")
 
 app = Flask(__name__)
@@ -31,12 +33,24 @@ app.config.update(SECRET_KEY=SECRET_KEY)
 def ensure_webroot() -> None:
     WEBROOT_PATH.mkdir(parents=True, exist_ok=True)
     UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
+    if not ADMIN_PASSWORD_FILE.exists():
+        ADMIN_PASSWORD_FILE.write_text(DEFAULT_ADMIN_PASSWORD, encoding="utf-8")
     if not CONTENT_FILE.exists():
         if WEBROOT_PATH != DEFAULT_WEBROOT and (DEFAULT_WEBROOT / "content.json").exists():
             shutil.copy(DEFAULT_WEBROOT / "content.json", CONTENT_FILE)
         else:
             default_content = load_default_content()
             save_content(default_content)
+
+
+def load_admin_password() -> str:
+    ensure_webroot()
+    return ADMIN_PASSWORD_FILE.read_text(encoding="utf-8").strip()
+
+
+def save_admin_password(value: str) -> None:
+    ensure_webroot()
+    ADMIN_PASSWORD_FILE.write_text(value, encoding="utf-8")
 
 
 def load_default_content() -> dict:
@@ -133,7 +147,7 @@ def admin_login():
     error = None
     if request.method == "POST":
         password = request.form.get("password", "")
-        if password == ADMIN_PASSWORD:
+        if password == load_admin_password():
             session["admin_authenticated"] = True
             next_url = request.args.get("next") or url_for("admin_dashboard")
             return redirect(next_url)
@@ -163,9 +177,12 @@ def admin_dashboard():
     if request.method == "POST":
         action = request.form.get("action")
         if action == "update_content":
-            updated = update_content_from_form(content, request.form)
+            updated, password_changed = update_content_from_form(content, request.form)
             save_content(updated)
-            session["admin_message"] = "Changes saved successfully."
+            message_text = "Changes saved successfully."
+            if password_changed:
+                message_text += " Admin password updated."
+            session["admin_message"] = message_text
             return redirect(url_for("admin_dashboard"))
         if action == "upload_media":
             file = request.files.get("media")
@@ -181,6 +198,13 @@ def admin_dashboard():
     uploads = sorted(
         [f.name for f in UPLOAD_FOLDER.iterdir() if f.is_file() and not f.name.startswith(".")]
     )
+    password_value = load_admin_password()
+    if not password_value:
+        password_state = "empty"
+    elif password_value == DEFAULT_ADMIN_PASSWORD:
+        password_state = "default"
+    else:
+        password_state = "custom"
     return render_template(
         "admin.html",
         content=content,
@@ -192,10 +216,16 @@ def admin_dashboard():
         message=message,
         uploads=uploads,
         webroot_path=str(WEBROOT_PATH),
+        admin_password_state=password_state,
     )
 
 
-def update_content_from_form(content: dict, form: "MultiDict") -> dict:
+def update_content_from_form(content: dict, form: "MultiDict") -> tuple[dict, bool]:
+    password_changed = False
+    new_password = form.get("admin_password", "").strip()
+    if new_password:
+        save_admin_password(new_password)
+        password_changed = True
     content["site"]["name"] = form.get("site_name", content["site"]["name"]).strip()
     content["site"]["tagline"] = form.get("site_tagline", "").strip()
     content["site"]["footer"]["description"] = form.get("footer_description", "").strip()
@@ -297,7 +327,7 @@ def update_content_from_form(content: dict, form: "MultiDict") -> dict:
     contact["about"]["description"] = form.get("contact_about_description", "").strip()
     contact["about"]["cards"] = parse_about_cards(form)
 
-    return content
+    return content, password_changed
 
 
 def render_mobile_home(content: dict):
@@ -429,6 +459,23 @@ def parse_about_cards(form) -> list[dict]:
 
 
 if __name__ == "__main__":
-    host = os.environ.get("HOST", "0.0.0.0")
-    port = int(os.environ.get("PORT", 5000))
-    app.run(debug=True, host=host, port=port)
+    parser = argparse.ArgumentParser(description="Run the print studio admin site")
+    parser.add_argument("--host", default=os.environ.get("HOST", "0.0.0.0"), help="Bind address")
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=int(os.environ.get("PORT", 5000)),
+        help="Port to listen on",
+    )
+    parser.add_argument(
+        "--clear-admin-password",
+        action="store_true",
+        help="Reset the admin password to the default value",
+    )
+    args = parser.parse_args()
+
+    if args.clear_admin_password:
+        save_admin_password(DEFAULT_ADMIN_PASSWORD)
+        print("Admin password reset to default value.")
+
+    app.run(debug=True, host=args.host, port=args.port)

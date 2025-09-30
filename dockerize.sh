@@ -63,7 +63,6 @@ if [[ "$RUN_CONTAINER" == true ]]; then
   docker run --rm \
     -p "${HOST_PORT}:5000" \
     -v "${PROJECT_ROOT}/webroot:/webroot" \
-    -e ADMIN_PASSWORD="printstudio" \
     "$IMAGE_NAME"
 else
   cat <<INFO
@@ -73,9 +72,12 @@ To run the container manually execute:
   docker run --rm \\
     -p ${HOST_PORT}:5000 \\
     -v "${PROJECT_ROOT}/webroot:/webroot" \\
-    -e ADMIN_PASSWORD="printstudio" \\
     ${IMAGE_NAME}
 
-Override ADMIN_PASSWORD or mount a different webroot as needed.
+Reset the admin password by appending "--clear-admin-password" to the run command, e.g.:
+  docker run --rm \\
+    -p ${HOST_PORT}:5000 \\
+    -v "${PROJECT_ROOT}/webroot:/webroot" \\
+    ${IMAGE_NAME} --clear-admin-password
 INFO
 fi

@@ -161,6 +161,13 @@
       font-size: 0.85rem;
     }
 
+    .field-help {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
     .section-body {
       display: none;
       gap: 1.5rem;
@@ -376,6 +383,41 @@
           <option value="/uploads/{{ upload }}">/uploads/{{ upload }}</option>
         {% endfor %}
       </datalist>
+
+      <article class="section-card is-editing" data-section>
+        <div class="section-toolbar">
+          <div>
+            <h2>Admin access</h2>
+            <p>Manage the password required to sign in</p>
+          </div>
+          <button type="button" class="edit-toggle" aria-expanded="true">Done</button>
+        </div>
+        <div class="section-preview">
+          <div class="preview-grid">
+            <dl>
+              <dt>Password status</dt>
+              <dd>
+                {% if admin_password_state == 'custom' %}
+                  Custom password set
+                {% elif admin_password_state == 'empty' %}
+                  Password cleared (no password required)
+                {% else %}
+                  Using default password
+                {% endif %}
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="form-fields">
+            <label>
+              Set new admin password
+              <input type="password" name="admin_password" placeholder="Enter new password" autocomplete="new-password" />
+              <span class="field-help">Leave blank to keep the existing password. Launch with <code>--clear-admin-password</code> to reset to the default.</span>
+            </label>
+          </div>
+        </div>
+      </article>
 
       <article class="section-card is-editing" data-section>
         <div class="section-toolbar">

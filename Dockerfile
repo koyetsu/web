@@ -4,8 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     WEBROOT_PATH=/webroot \
     FLASK_APP=app.py \
-    FLASK_RUN_HOST=0.0.0.0 \
-    ADMIN_PASSWORD=printstudio
+    FLASK_RUN_HOST=0.0.0.0
 
 WORKDIR /app
 
@@ -18,4 +17,4 @@ VOLUME ["/webroot"]
 
 EXPOSE 5000
 
-CMD ["flask", "run", "--port=5000"]
+CMD ["python", "app.py"]

@@ -40,13 +40,29 @@ if (-not $SkipInstall) {
     Write-Host "Skipping dependency install" -ForegroundColor Yellow
 }
 
-if ($AdminPassword) {
-    $env:ADMIN_PASSWORD = $AdminPassword
+if ($WebrootPath) {
+    if (-not (Test-Path $WebrootPath)) {
+        New-Item -ItemType Directory -Path $WebrootPath -Force | Out-Null
+    }
+    $resolvedWebroot = (Resolve-Path $WebrootPath).Path
+} else {
+    $defaultWebroot = Join-Path $repoRoot 'webroot'
+    if (-not (Test-Path $defaultWebroot)) {
+        New-Item -ItemType Directory -Path $defaultWebroot -Force | Out-Null
+    }
+    $resolvedWebroot = (Resolve-Path $defaultWebroot).Path
 }
 
-if ($WebrootPath) {
-    $resolvedWebroot = Resolve-Path $WebrootPath
-    $env:WEBROOT_PATH = $resolvedWebroot.Path
+$env:WEBROOT_PATH = $resolvedWebroot
+
+$adminPasswordFile = Join-Path $resolvedWebroot 'admin_password.txt'
+if (-not (Test-Path $adminPasswordFile)) {
+    Set-Content -Path $adminPasswordFile -Value 'printstudio' -Encoding UTF8 -NoNewline
+}
+
+if ($AdminPassword) {
+    Write-Host "Updating admin password file" -ForegroundColor Cyan
+    Set-Content -Path $adminPasswordFile -Value $AdminPassword -Encoding UTF8 -NoNewline
 }
 
 $env:HOST = $BindAddress
