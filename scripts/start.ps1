@@ -9,7 +9,17 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-$repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$candidateRoot = $scriptDir
+
+if (-not (Test-Path (Join-Path $candidateRoot 'requirements.txt'))) {
+    $parentDir = Split-Path -Parent $candidateRoot
+    if ($parentDir -and (Test-Path (Join-Path $parentDir 'requirements.txt'))) {
+        $candidateRoot = $parentDir
+    }
+}
+
+$repoRoot = (Resolve-Path $candidateRoot).Path
 Set-Location $repoRoot
 
 if (!(Test-Path $VenvPath)) {
