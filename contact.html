@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact BlueWave Print Studio | Local Print Experts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body>
+    <header>
+      <div class="navbar">
+        <a class="logo" href="/">BlueWave Print Studio</a>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a class="active" href="contact.html">Contact &amp; About</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-content">
+          <div>
+            <span class="badge">We answer within one business hour</span>
+            <h1>Let’s bring your next print idea to life</h1>
+            <p>
+              Reach out for project estimates, design consultations, or a quick proof review. Our in-house specialists are ready to support every step, from concept through delivery.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="grid" style="max-width: 960px">
+          <div class="contact-card">
+            <strong>Visit the studio</strong>
+            <div>
+              1432 Shoreline Blvd<br />
+              Corpus Christi, TX 78401
+            </div>
+            <div>
+              <strong>Hours</strong>
+              <div>Monday – Friday: 8:30a – 6:00p</div>
+              <div>Saturday: By appointment</div>
+            </div>
+            <div>
+              <strong>Call or text</strong>
+              <a href="tel:13615550198">(361) 555-0198</a>
+            </div>
+            <div>
+              <strong>Email</strong>
+              <a href="mailto:hello@bluewaveprint.com">hello@bluewaveprint.com</a>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <strong>Start a project</strong>
+            <form class="contact-form">
+              <label>
+                Name
+                <input type="text" name="name" placeholder="Jordan Smith" />
+              </label>
+              <label>
+                Company
+                <input type="text" name="company" placeholder="Harbor City Outfitters" />
+              </label>
+              <label>
+                Email
+                <input type="email" name="email" placeholder="you@example.com" />
+              </label>
+              <label>
+                Project details
+                <textarea name="details" placeholder="Tell us about quantities, sizes, deadlines, and finishing needs."></textarea>
+              </label>
+              <button class="primary-button" type="submit">Request quote →</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt">
+        <div class="grid" style="max-width: 900px">
+          <h2>About BlueWave Print Studio</h2>
+          <p>
+            Founded in 1998 by lifelong Corpus Christi residents Ana and Mateo Castillo, BlueWave Print Studio started as a small-format print shop helping neighborhood schools and non-profits. Today, our 12-person team pairs design-forward thinking with state-of-the-art production technology to deliver consistent, color-accurate results for businesses across South Texas.
+          </p>
+          <div class="grid grid-3">
+            <article class="card">
+              <h3>Community roots</h3>
+              <p>We reinvest 5% of annual profits into local art programs, youth sports, and beach cleanups.</p>
+            </article>
+            <article class="card">
+              <h3>Certified sustainability</h3>
+              <p>BlueWave is FSC®-certified and offers recycled, post-consumer paper stocks for every product line.</p>
+            </article>
+            <article class="card">
+              <h3>Partners in growth</h3>
+              <p>From branding refreshes to multi-location signage rollouts, we serve as a dedicated print partner for 200+ area businesses.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-content">
+        <div>
+          <div class="footer-logo">BlueWave Print Studio</div>
+          <p>Modern print craftsmanship from a locally owned team serving the Coastal Bend for over 25 years.</p>
+        </div>
+        <div>
+          <strong>Visit</strong>
+          <ul class="list-reset">
+            <li>1432 Shoreline Blvd</li>
+            <li>Corpus Christi, TX 78401</li>
+            <li>Mon–Fri: 8:30a – 6:00p</li>
+          </ul>
+        </div>
+        <div>
+          <strong>Contact</strong>
+          <ul class="list-reset">
+            <li>(361) 555-0198</li>
+            <li><a href="mailto:hello@bluewaveprint.com">hello@bluewaveprint.com</a></li>
+            <li><a href="contact.html">Start a project →</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">© <span id="year"></span> BlueWave Print Studio. All rights reserved.</div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
