@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+  <section class="hero">
+    <div class="hero-content">
+      <div class="service-hero">
+        <span class="badge">{{ services.hero.badge }}</span>
+        <h1>{{ services.hero.title }}</h1>
+        <p>{{ services.hero.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="grid">
+      <h2>{{ services.capabilities.title }}</h2>
+      <div class="grid grid-3">
+        {% for item in services.capabilities["items"] %}
+          <article class="card">
+            {% if item.image %}
+              <div class="card-media">
+                <img src="{{ item.image }}" alt="{{ item.image_alt }}" loading="lazy" />
+              </div>
+            {% endif %}
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+            {% if item.bullets %}
+              <ul class="checklist">
+                {% for bullet in item.bullets %}
+                  <li>{{ bullet }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid">
+      <h2>{{ services.bundles.title }}</h2>
+      <div class="grid grid-3">
+        {% for bundle in services.bundles["items"] %}
+          <article class="card">
+            {% if bundle.image %}
+              <div class="card-media">
+                <img src="{{ bundle.image }}" alt="{{ bundle.image_alt }}" loading="lazy" />
+              </div>
+            {% endif %}
+            <h3>{{ bundle.title }}</h3>
+            {% if bundle.price %}
+              <div class="price">{{ bundle.price }}</div>
+            {% endif %}
+            <p>{{ bundle.description }}</p>
+            {% if bundle.bullets %}
+              <ul class="checklist">
+                {% for bullet in bundle.bullets %}
+                  <li>{{ bullet }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="grid" style="max-width: 980px">
+      <h2>{{ services.process.title }}</h2>
+      <div class="grid grid-3">
+        {% for step in services.process.steps %}
+          <article class="card">
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.description }}</p>
+          </article>
+        {% endfor %}
+      </div>
+      <div class="card" style="margin-top: 2rem; text-align: center">
+        <h3>{{ services.process.cta.title }}</h3>
+        <p>{{ services.process.cta.description }}</p>
+        <a class="primary-button" href="{{ services.process.cta.link }}">{{ services.process.cta.text }}</a>
+      </div>
+    </div>
+  </section>
+{% endblock %}

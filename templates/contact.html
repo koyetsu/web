@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+  <section class="hero">
+    <div class="hero-content">
+      <div>
+        <span class="badge">{{ contact.hero.badge }}</span>
+        <h1>{{ contact.hero.title }}</h1>
+        <p>{{ contact.hero.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid" style="max-width: 960px">
+      <div class="contact-card">
+        <strong>{{ contact.studio.visit_title }}</strong>
+        <div>
+          {% for line in contact.studio.address %}
+            {{ line }}<br />
+          {% endfor %}
+        </div>
+        <div>
+          <strong>{{ contact.studio.hours_title }}</strong>
+          {% for line in contact.studio.hours %}
+            <div>{{ line }}</div>
+          {% endfor %}
+        </div>
+        <div>
+          <strong>{{ contact.studio.phone_title }}</strong>
+          <a href="tel:{{ contact.studio.phone_href }}">{{ contact.studio.phone }}</a>
+        </div>
+        <div>
+          <strong>{{ contact.studio.email_title }}</strong>
+          <a href="mailto:{{ contact.studio.email }}">{{ contact.studio.email }}</a>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <strong>{{ contact.form.title }}</strong>
+        <form class="contact-form">
+          {% for field in contact.form.fields %}
+            <label>
+              {{ field.label }}
+              {% if field.type == 'textarea' %}
+                <textarea name="{{ field.name }}" placeholder="{{ field.placeholder }}"></textarea>
+              {% else %}
+                <input type="{{ field.type }}" name="{{ field.name }}" placeholder="{{ field.placeholder }}" />
+              {% endif %}
+            </label>
+          {% endfor %}
+          <button class="primary-button" type="submit">{{ contact.form.submit_text }}</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="grid" style="max-width: 900px">
+      <h2>{{ contact.about.title }}</h2>
+      <p>{{ contact.about.description }}</p>
+      <div class="grid grid-3">
+        {% for card in contact.about.cards %}
+          <article class="card">
+            <h3>{{ card.title }}</h3>
+            <p>{{ card.description }}</p>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

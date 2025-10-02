@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+  <section class="hero">
+    <div class="hero-content">
+      <div>
+        <span class="badge">{{ home.hero.badge }}</span>
+        <h1>{{ home.hero.title }}</h1>
+        <p>{{ home.hero.description }}</p>
+        <a class="primary-button" href="{{ home.hero.cta_link }}">{{ home.hero.cta_text }}</a>
+      </div>
+      {% if home.hero.image %}
+        <div class="hero-image">
+          <img src="{{ home.hero.image }}" alt="{{ home.hero.image_alt }}" />
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="grid">
+      <h2>{{ home.what_we_print.title }}</h2>
+      <div class="grid grid-3">
+        {% for item in home.what_we_print["items"] %}
+          <article class="card">
+            {% if item.image %}
+              <div class="card-media">
+                <img src="{{ item.image }}" alt="{{ item.image_alt }}" loading="lazy" />
+              </div>
+            {% endif %}
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+            {% if item.bullets %}
+              <ul class="checklist">
+                {% for bullet in item.bullets %}
+                  <li>{{ bullet }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid">
+      <h2>{{ home.why_choose.title }}</h2>
+      <div class="grid grid-3">
+        {% for item in home.why_choose["items"] %}
+          <article class="card">
+            {% if item.image %}
+              <div class="card-media compact">
+                <img src="{{ item.image }}" alt="{{ item.image_alt }}" loading="lazy" />
+              </div>
+            {% endif %}
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="grid">
+      <h2>{{ home.testimonials.title }}</h2>
+      <div class="grid grid-3">
+        {% for testimonial in home.testimonials["items"] %}
+          <article class="card testimonial">
+            <p>{{ testimonial.quote }}</p>
+            <cite>{{ testimonial.author }}</cite>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

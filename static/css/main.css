@@ -71,11 +71,19 @@ nav a {
 
 nav a.active,
 nav a:hover {
-  background: rgba(29, 78, 216, 0.1);
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.admin-link {
+  font-weight: 600;
 }
 
 .hero {
-  background: linear-gradient(140deg, rgba(29, 78, 216, 0.12), rgba(59, 130, 246, 0.05));
+  background: linear-gradient(
+    140deg,
+    color-mix(in srgb, var(--primary) 18%, transparent),
+    color-mix(in srgb, var(--primary) 8%, transparent)
+  );
   padding: 6rem 1.5rem 5rem;
 }
 
@@ -108,12 +116,12 @@ nav a:hover {
   color: var(--white);
   font-weight: 600;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 12px 24px -15px rgba(29, 78, 216, 0.75);
+  box-shadow: 0 12px 24px -15px color-mix(in srgb, var(--primary) 70%, transparent);
 }
 
 .primary-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 18px 35px -20px rgba(29, 78, 216, 0.9);
+  box-shadow: 0 18px 35px -20px color-mix(in srgb, var(--primary) 80%, transparent);
 }
 
 .section {
@@ -142,23 +150,55 @@ nav a:hover {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
+.hero-content {
+  align-items: center;
+}
+
+.hero-image {
+  justify-self: center;
+  max-width: 520px;
+}
+
+.hero-image img {
+  width: 100%;
+  border-radius: 24px;
+  box-shadow: 0 24px 60px -30px color-mix(in srgb, var(--primary) 60%, transparent);
+}
+
 .card {
   background: var(--white);
   border-radius: 18px;
   padding: 2rem;
-  box-shadow: 0 12px 30px -22px rgba(15, 23, 42, 0.35);
+  box-shadow: 0 12px 30px -22px color-mix(in srgb, var(--primary-dark) 28%, rgba(15, 23, 42, 0.35));
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 24px 45px -26px rgba(15, 23, 42, 0.45);
+  box-shadow: 0 24px 45px -26px color-mix(in srgb, var(--primary-dark) 32%, rgba(15, 23, 42, 0.45));
+}
+
+.card-media {
+  border-radius: 14px;
+  overflow: hidden;
+  margin: -0.5rem -0.5rem 1.25rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.card-media img {
+  width: 100%;
+  display: block;
+}
+
+.card-media.compact {
+  max-width: 120px;
+  margin: 0 0 1rem;
 }
 
 .badge {
   display: inline-block;
   padding: 0.35rem 0.75rem;
-  background: rgba(245, 158, 11, 0.15);
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
   color: var(--accent);
   border-radius: 999px;
   font-weight: 600;
@@ -178,7 +218,7 @@ nav a:hover {
   top: -40px;
   left: -10px;
   font-size: 5rem;
-  color: rgba(29, 78, 216, 0.15);
+  color: color-mix(in srgb, var(--primary) 16%, transparent);
 }
 
 .testimonial cite {
@@ -189,8 +229,8 @@ nav a:hover {
 }
 
 footer {
-  background: #0f172a;
-  color: rgba(226, 232, 240, 0.9);
+  background: color-mix(in srgb, var(--primary-dark) 85%, #0f172a 15%);
+  color: rgba(226, 232, 240, 0.92);
   padding: 3rem 1.5rem 2rem;
 }
 
@@ -213,6 +253,41 @@ footer {
   text-align: center;
   font-size: 0.85rem;
   color: rgba(226, 232, 240, 0.65);
+}
+
+.admin-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 50px -30px color-mix(in srgb, var(--primary-dark) 32%, rgba(15, 23, 42, 0.45));
+  display: grid;
+  gap: 1.5rem;
+}
+
+.admin-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-form label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+.admin-form input {
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(100, 116, 139, 0.25);
+  font: inherit;
+}
+
+.alert {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  font-weight: 600;
 }
 
 .list-reset {
