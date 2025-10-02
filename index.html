@@ -37,6 +37,47 @@
         </div>
       </section>
 
+      <section class="section reviews-section">
+        <div class="grid reviews-grid">
+          <div class="reviews-intro">
+            <h2>Fresh from our clients</h2>
+            <p>
+              We’re grateful for the partnerships we’ve built across the Coastal Bend. Share your experience and see how neighbors are using BlueWave to move their ideas forward.
+            </p>
+            <form id="review-form" class="review-form" aria-label="Add your review">
+              <div class="form-row">
+                <label>
+                  <span>Name</span>
+                  <input type="text" name="name" placeholder="Your name" required />
+                </label>
+                <label>
+                  <span>Company (optional)</span>
+                  <input type="text" name="company" placeholder="Business or organization" />
+                </label>
+              </div>
+              <label>
+                <span>How would you rate us?</span>
+                <select name="rating" required>
+                  <option value="" disabled selected>Select a rating</option>
+                  <option value="5">★★★★★ – Outstanding</option>
+                  <option value="4">★★★★☆ – Great</option>
+                  <option value="3">★★★☆☆ – Good</option>
+                  <option value="2">★★☆☆☆ – Needs improvement</option>
+                  <option value="1">★☆☆☆☆ – Poor</option>
+                </select>
+              </label>
+              <label>
+                <span>Your feedback</span>
+                <textarea name="message" rows="4" placeholder="Tell us about your project experience" required></textarea>
+              </label>
+              <button type="submit" class="primary-button">Submit review</button>
+              <p class="review-note">Latest reviews appear publicly after submission.</p>
+            </form>
+          </div>
+          <div class="reviews-list" id="recent-review-list" aria-live="polite"></div>
+        </div>
+      </section>
+
       <section class="section alt">
         <div class="grid">
           <h2>What we print every day</h2>
@@ -158,7 +199,149 @@
     </footer>
 
     <script>
-      document.getElementById('year').textContent = new Date().getFullYear();
+      const REVIEW_STORAGE_KEY = 'bluewaveReviews';
+
+      const defaultReviews = [
+        {
+          name: 'Maya Flores',
+          company: 'Harbor City Chamber',
+          rating: 5,
+          message:
+            'BlueWave transformed our event experience. They produced a full suite of signage and handouts in under three days, and the color accuracy was perfect.',
+          createdAt: '2024-03-02T09:00:00Z',
+        },
+        {
+          name: 'Ruben Ortiz',
+          company: 'Gulf Harvest Coffee',
+          rating: 5,
+          message:
+            'Our product packaging looks like a national brand now. Their team sourced sustainable materials and delivered an unboxing experience customers rave about.',
+          createdAt: '2024-02-18T15:30:00Z',
+        },
+        {
+          name: 'Leah Thompson',
+          company: 'Seabreeze Florals',
+          rating: 5,
+          message:
+            'From first draft to final print, BlueWave communicates clearly. Their delivery service means we never have to leave the shop to get materials.',
+          createdAt: '2024-01-27T20:15:00Z',
+        },
+      ];
+
+      const yearEl = document.getElementById('year');
+      if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
+      }
+
+      function loadReviews() {
+        try {
+          const stored = window.localStorage.getItem(REVIEW_STORAGE_KEY);
+          if (!stored) {
+            window.localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(defaultReviews));
+            return [...defaultReviews];
+          }
+          const parsed = JSON.parse(stored);
+          if (!Array.isArray(parsed) || !parsed.length) {
+            window.localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(defaultReviews));
+            return [...defaultReviews];
+          }
+          return parsed;
+        } catch (error) {
+          return [...defaultReviews];
+        }
+      }
+
+      function saveReviews(reviews) {
+        try {
+          window.localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(reviews));
+        } catch (error) {
+          console.error('Unable to save reviews:', error);
+        }
+      }
+
+      function renderReviews() {
+        const list = document.getElementById('recent-review-list');
+        if (!list) return;
+
+        const reviews = loadReviews()
+          .slice()
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          .slice(0, 3);
+
+        list.innerHTML = '';
+
+        reviews.forEach((review) => {
+          const card = document.createElement('article');
+          card.className = 'review-card';
+
+          const header = document.createElement('div');
+          header.className = 'review-header';
+
+          const meta = document.createElement('div');
+          meta.className = 'review-meta';
+
+          const author = document.createElement('span');
+          author.className = 'review-author';
+          author.textContent = review.name;
+
+          const company = document.createElement('span');
+          if (review.company) {
+            company.textContent = review.company;
+          }
+
+          meta.appendChild(author);
+          if (review.company) {
+            meta.appendChild(company);
+          }
+
+          const stars = document.createElement('span');
+          stars.className = 'review-stars';
+          const rating = Math.max(1, Math.min(5, Number(review.rating) || 0));
+          stars.textContent = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+
+          header.appendChild(meta);
+          header.appendChild(stars);
+
+          const message = document.createElement('p');
+          message.className = 'review-message';
+          message.textContent = review.message;
+
+          card.appendChild(header);
+          card.appendChild(message);
+          list.appendChild(card);
+        });
+      }
+
+      const reviewForm = document.getElementById('review-form');
+
+      if (reviewForm) {
+        reviewForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const formData = new FormData(reviewForm);
+          const name = formData.get('name')?.toString().trim();
+          const company = formData.get('company')?.toString().trim();
+          const rating = Number(formData.get('rating'));
+          const message = formData.get('message')?.toString().trim();
+
+          if (!name || !message || !rating) {
+            return;
+          }
+
+          const reviews = loadReviews();
+          reviews.push({
+            name,
+            company,
+            rating,
+            message,
+            createdAt: new Date().toISOString(),
+          });
+          saveReviews(reviews);
+          renderReviews();
+          reviewForm.reset();
+        });
+      }
+
+      renderReviews();
     </script>
   </body>
 </html>

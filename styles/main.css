@@ -86,6 +86,111 @@ nav a:hover {
   gap: 3rem;
 }
 
+.reviews-section {
+  padding-top: 0;
+}
+
+.reviews-grid {
+  gap: 3rem;
+  align-items: start;
+}
+
+.reviews-intro p {
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.reviews-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.review-card {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 1.75rem;
+  box-shadow: 0 20px 55px -35px rgba(15, 23, 42, 0.35);
+  display: grid;
+  gap: 1rem;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.review-author {
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.review-meta {
+  display: grid;
+  gap: 0.25rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.review-stars {
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.review-message {
+  margin: 0;
+  color: var(--text);
+}
+
+.review-form {
+  display: grid;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 18px;
+  padding: 1.75rem;
+  box-shadow: 0 20px 60px -40px rgba(15, 23, 42, 0.25);
+}
+
+.review-form label {
+  display: grid;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.review-form input,
+.review-form textarea,
+.review-form select {
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(100, 116, 139, 0.2);
+  font: inherit;
+  background: var(--white);
+}
+
+.review-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.review-form .form-row {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.review-form .primary-button {
+  justify-self: start;
+}
+
+.review-note {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
 .hero h1 {
   font-size: clamp(2.5rem, 4vw, 3.5rem);
   margin-bottom: 1rem;
@@ -304,5 +409,15 @@ ul.checklist li::before {
   nav ul {
     flex-wrap: wrap;
     justify-content: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .review-form {
+    order: 2;
   }
 }
