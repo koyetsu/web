@@ -1,74 +1,245 @@
 {% extends 'base.html' %}
 {% block content %}
-  <section class="hero">
+  {% if admin_mode %}
+    <div class="page-editor is-open" data-page-editor="services">
+      <div class="page-editor__header">
+        <h2 class="page-editor__title">Services page editor</h2>
+        <button type="button" class="page-editor__toggle" data-editor-toggle>Hide editor</button>
+      </div>
+      <form class="page-editor__body" data-editor-form>
+        <input type="hidden" name="page" value="services" />
+        <p class="editor-hint">Adjust copy, pricing, and workflow steps directly from this panel.</p>
+        <div class="form-fields">
+          <label>Hero badge <input type="text" name="services_hero_badge" value="{{ services.hero.badge }}" /></label>
+          <label>Hero title <input type="text" name="services_hero_title" value="{{ services.hero.title }}" /></label>
+          <label>Hero description <textarea name="services_hero_description">{{ services.hero.description }}</textarea></label>
+        </div>
+
+        <h3>{{ services.capabilities.title }}</h3>
+        <div class="form-fields">
+          <label>Section title
+            <input type="text" name="services_capabilities_heading" value="{{ services.capabilities.title }}" />
+          </label>
+        </div>
+        <div class="collection-wrapper">
+          <div class="collection" data-collection="services_capabilities">
+            {% for item in services.capabilities['items'] %}
+              <div class="collection-item">
+                <div class="collection-item-header">
+                  <strong>Capability {{ loop.index }}</strong>
+                  <button type="button" class="remove-item">Remove</button>
+                </div>
+                <label>Title <input type="text" name="services_capabilities_title" value="{{ item.title }}" /></label>
+                <label>Description <textarea name="services_capabilities_description">{{ item.description }}</textarea></label>
+                <label>
+                  Feature image
+                  <input type="text" name="services_capabilities_image" value="{{ item.image | default('', true) }}" list="media-options" />
+                </label>
+                <label>
+                  Image alt text
+                  <input type="text" name="services_capabilities_image_alt" value="{{ item.image_alt | default('', true) }}" />
+                </label>
+                <label>Bullet list (one per line)
+                  <textarea name="services_capabilities_bullets">{{ item.bullets | join('\n') }}</textarea>
+                </label>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-item" data-template="services_capabilities_template">Add capability</button>
+        </div>
+        <template id="services_capabilities_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New capability</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="services_capabilities_title" /></label>
+            <label>Description <textarea name="services_capabilities_description"></textarea></label>
+            <label>
+              Feature image
+              <input type="text" name="services_capabilities_image" list="media-options" />
+            </label>
+            <label>
+              Image alt text
+              <input type="text" name="services_capabilities_image_alt" />
+            </label>
+            <label>Bullet list (one per line)
+              <textarea name="services_capabilities_bullets"></textarea>
+            </label>
+          </div>
+        </template>
+
+        <h3>{{ services.bundles.title }}</h3>
+        <div class="form-fields">
+          <label>Section title
+            <input type="text" name="services_bundles_heading" value="{{ services.bundles.title }}" />
+          </label>
+        </div>
+        <div class="collection-wrapper">
+          <div class="collection" data-collection="services_bundles">
+            {% for item in services.bundles['items'] %}
+              <div class="collection-item">
+                <div class="collection-item-header">
+                  <strong>Bundle {{ loop.index }}</strong>
+                  <button type="button" class="remove-item">Remove</button>
+                </div>
+                <label>Title <input type="text" name="services_bundles_title" value="{{ item.title }}" /></label>
+                <label>Price <input type="text" name="services_bundles_price" value="{{ item.price }}" /></label>
+                <label>Description <textarea name="services_bundles_description">{{ item.description }}</textarea></label>
+                <label>
+                  Bundle image
+                  <input type="text" name="services_bundles_image" value="{{ item.image | default('', true) }}" list="media-options" />
+                </label>
+                <label>
+                  Image alt text
+                  <input type="text" name="services_bundles_image_alt" value="{{ item.image_alt | default('', true) }}" />
+                </label>
+                <label>Bullet list (one per line)
+                  <textarea name="services_bundles_bullets">{{ item.bullets | join('\n') }}</textarea>
+                </label>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-item" data-template="services_bundles_template">Add bundle</button>
+        </div>
+        <template id="services_bundles_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New bundle</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="services_bundles_title" /></label>
+            <label>Price <input type="text" name="services_bundles_price" /></label>
+            <label>Description <textarea name="services_bundles_description"></textarea></label>
+            <label>
+              Bundle image
+              <input type="text" name="services_bundles_image" list="media-options" />
+            </label>
+            <label>
+              Image alt text
+              <input type="text" name="services_bundles_image_alt" />
+            </label>
+            <label>Bullet list (one per line)
+              <textarea name="services_bundles_bullets"></textarea>
+            </label>
+          </div>
+        </template>
+
+        <h3>{{ services.process.title }}</h3>
+        <div class="form-fields">
+          <label>Section title
+            <input type="text" name="services_process_heading" value="{{ services.process.title }}" />
+          </label>
+        </div>
+        <div class="collection-wrapper">
+          <div class="collection" data-collection="services_process">
+            {% for item in services.process.steps %}
+              <div class="collection-item">
+                <div class="collection-item-header">
+                  <strong>Step {{ loop.index }}</strong>
+                  <button type="button" class="remove-item">Remove</button>
+                </div>
+                <label>Title <input type="text" name="services_process_title" value="{{ item.title }}" /></label>
+                <label>Description <textarea name="services_process_description">{{ item.description }}</textarea></label>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-item" data-template="services_process_template">Add step</button>
+        </div>
+        <template id="services_process_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New step</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="services_process_title" /></label>
+            <label>Description <textarea name="services_process_description"></textarea></label>
+          </div>
+        </template>
+
+        <div class="form-fields">
+          <label>Call-to-action title <input type="text" name="services_process_cta_title" value="{{ services.process.cta.title }}" /></label>
+          <label>
+            Call-to-action description
+            <textarea name="services_process_cta_description">{{ services.process.cta.description }}</textarea>
+          </label>
+          <label>Button text <input type="text" name="services_process_cta_text" value="{{ services.process.cta.text }}" /></label>
+          <label>Button link <input type="text" name="services_process_cta_link" value="{{ services.process.cta.link }}" /></label>
+        </div>
+
+        <datalist id="media-options">
+          <option value=""></option>
+          {% for upload in editor_uploads %}
+            <option value="/uploads/{{ upload }}">/uploads/{{ upload }}</option>
+          {% endfor %}
+        </datalist>
+      </form>
+    </div>
+  {% endif %}
+
+  <section class="hero" data-preview-section="services-hero">
     <div class="hero-content">
       <div class="service-hero">
-        <span class="badge">{{ services.hero.badge }}</span>
-        <h1>{{ services.hero.title }}</h1>
-        <p>{{ services.hero.description }}</p>
+        <span class="badge" data-slot="services.hero.badge">{{ services.hero.badge }}</span>
+        <h1 data-slot="services.hero.title">{{ services.hero.title }}</h1>
+        <p data-slot="services.hero.description">{{ services.hero.description }}</p>
       </div>
     </div>
   </section>
 
-  <section class="section alt">
+  <section class="section alt" data-preview-section="services-capabilities">
     <div class="grid">
-      <h2>{{ services.capabilities.title }}</h2>
-      <div class="grid grid-3">
-        {% for item in services.capabilities["items"] %}
+      <h2 data-slot="services.capabilities.title">{{ services.capabilities.title }}</h2>
+      <div class="grid grid-3" data-repeat="services.capabilities.items">
+        {% for item in services.capabilities['items'] %}
           <article class="card">
-            {% if item.image %}
-              <div class="card-media">
+            <div class="card-media" data-image-container {% if not item.image %}hidden{% endif %}>
+              {% if item.image %}
                 <img src="{{ item.image }}" alt="{{ item.image_alt }}" loading="lazy" />
-              </div>
-            {% endif %}
+              {% endif %}
+            </div>
             <h3>{{ item.title }}</h3>
             <p>{{ item.description }}</p>
-            {% if item.bullets %}
-              <ul class="checklist">
-                {% for bullet in item.bullets %}
-                  <li>{{ bullet }}</li>
-                {% endfor %}
-              </ul>
-            {% endif %}
+            <ul class="checklist" data-list {% if not item.bullets %}hidden{% endif %}>
+              {% for bullet in item.bullets %}
+                <li>{{ bullet }}</li>
+              {% endfor %}
+            </ul>
           </article>
         {% endfor %}
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" data-preview-section="services-bundles">
     <div class="grid">
-      <h2>{{ services.bundles.title }}</h2>
-      <div class="grid grid-3">
-        {% for bundle in services.bundles["items"] %}
+      <h2 data-slot="services.bundles.title">{{ services.bundles.title }}</h2>
+      <div class="grid grid-3" data-repeat="services.bundles.items">
+        {% for bundle in services.bundles['items'] %}
           <article class="card">
-            {% if bundle.image %}
-              <div class="card-media">
+            <div class="card-media" data-image-container {% if not bundle.image %}hidden{% endif %}>
+              {% if bundle.image %}
                 <img src="{{ bundle.image }}" alt="{{ bundle.image_alt }}" loading="lazy" />
-              </div>
-            {% endif %}
+              {% endif %}
+            </div>
             <h3>{{ bundle.title }}</h3>
-            {% if bundle.price %}
-              <div class="price">{{ bundle.price }}</div>
-            {% endif %}
+            <div class="price" data-slot="services.bundles.price">{{ bundle.price }}</div>
             <p>{{ bundle.description }}</p>
-            {% if bundle.bullets %}
-              <ul class="checklist">
-                {% for bullet in bundle.bullets %}
-                  <li>{{ bullet }}</li>
-                {% endfor %}
-              </ul>
-            {% endif %}
+            <ul class="checklist" data-list {% if not bundle.bullets %}hidden{% endif %}>
+              {% for bullet in bundle.bullets %}
+                <li>{{ bullet }}</li>
+              {% endfor %}
+            </ul>
           </article>
         {% endfor %}
       </div>
     </div>
   </section>
 
-  <section class="section alt">
+  <section class="section alt" data-preview-section="services-process">
     <div class="grid" style="max-width: 980px">
-      <h2>{{ services.process.title }}</h2>
-      <div class="grid grid-3">
+      <h2 data-slot="services.process.title">{{ services.process.title }}</h2>
+      <div class="grid grid-3" data-repeat="services.process.steps">
         {% for step in services.process.steps %}
           <article class="card">
             <h3>{{ step.title }}</h3>
@@ -76,11 +247,39 @@
           </article>
         {% endfor %}
       </div>
-      <div class="card" style="margin-top: 2rem; text-align: center">
-        <h3>{{ services.process.cta.title }}</h3>
-        <p>{{ services.process.cta.description }}</p>
-        <a class="primary-button" href="{{ services.process.cta.link }}">{{ services.process.cta.text }}</a>
+      <div class="card" style="margin-top: 2rem; text-align: center" data-preview-cta>
+        <h3 data-slot="services.process.cta.title">{{ services.process.cta.title }}</h3>
+        <p data-slot="services.process.cta.description">{{ services.process.cta.description }}</p>
+        <a class="primary-button" href="{{ services.process.cta.link }}" data-slot-link="services.process.cta">
+          {{ services.process.cta.text }}
+        </a>
       </div>
     </div>
   </section>
+
+  {% if admin_mode %}
+    <template id="tpl-services-capability">
+      <article class="card">
+        <div class="card-media" data-image-container hidden></div>
+        <h3></h3>
+        <p></p>
+        <ul class="checklist" data-list hidden></ul>
+      </article>
+    </template>
+    <template id="tpl-services-bundle">
+      <article class="card">
+        <div class="card-media" data-image-container hidden></div>
+        <h3></h3>
+        <div class="price"></div>
+        <p></p>
+        <ul class="checklist" data-list hidden></ul>
+      </article>
+    </template>
+    <template id="tpl-services-step">
+      <article class="card">
+        <h3></h3>
+        <p></p>
+      </article>
+    </template>
+  {% endif %}
 {% endblock %}

@@ -34,8 +34,7 @@
         ]
       },
       "copyright": "All rights reserved."
-    },
-    "flags": { "show_admin_border": false }
+    }
   },
   "pages": {
     "home": {

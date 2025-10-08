@@ -3,9 +3,12 @@ import json
 import os
 from functools import wraps
 from pathlib import Path
+from urllib.parse import urlparse
+from uuid import uuid4
 
 from flask import (
     Flask,
+    jsonify,
     redirect,
     render_template,
     request,
@@ -38,6 +41,13 @@ class Setting(Base):
     __tablename__ = "settings"
 
     key = Column(String(100), primary_key=True)
+    value = Column(Text, nullable=False)
+
+
+class Draft(Base):
+    __tablename__ = "drafts"
+
+    id = Column(String(64), primary_key=True)
     value = Column(Text, nullable=False)
 
 
@@ -108,7 +118,8 @@ def load_default_content() -> dict:
 def ensure_content_defaults(content: dict) -> dict:
     site = content.setdefault("site", {})
     flags = site.setdefault("flags", {})
-    flags.setdefault("show_admin_border", False)
+    if "show_admin_border" in flags:
+        flags.pop("show_admin_border", None)
     return content
 
 
@@ -138,170 +149,105 @@ def save_content(data: dict) -> None:
         session.commit()
 
 
-def login_required(view):
-    @wraps(view)
-    def wrapped(*args, **kwargs):
-        if not session.get("admin_authenticated"):
-            return redirect(url_for("admin_login", next=request.path))
-        return view(*args, **kwargs)
-
-    return wrapped
+def is_admin_mode() -> bool:
+    return bool(session.get("admin_mode"))
 
 
-def split_lines(value: str) -> list[str]:
-    return [line.strip() for line in value.splitlines() if line.strip()]
-
-
-def page_title(content: dict, page_key: str) -> str:
-    meta = content["pages"].get(page_key, {}).get("meta", {})
-    return meta.get("title") or content["site"].get("tagline") or content["site"]["name"]
-
-
-def compose_body_class(content: dict, *extra_classes: str) -> str:
-    ensure_content_defaults(content)
-    classes = [cls for cls in extra_classes if cls]
-    if content["site"]["flags"].get("show_admin_border"):
-        classes.append("admin-border")
-    return " ".join(classes).strip()
-
-
-@app.route("/")
-def home():
-    content = load_content()
-    if should_use_mobile_alt(request):
-        return render_mobile_home(content)
-    return render_template(
-        "index.html",
-        content=content,
-        theme=content["site"]["colors"],
-        home=content["pages"]["home"],
-        page_title=page_title(content, "home"),
-        body_class=compose_body_class(content),
-    )
-
-
-@app.route("/mobile")
-def mobile_home():
-    content = load_content()
-    return render_mobile_home(content)
-
-
-@app.route("/services")
-def services_page():
-    content = load_content()
-    return render_template(
-        "services.html",
-        content=content,
-        theme=content["site"]["colors"],
-        services=content["pages"]["services"],
-        page_title=page_title(content, "services"),
-        body_class=compose_body_class(content),
-    )
-
-
-@app.route("/contact")
-def contact_page():
-    content = load_content()
-    return render_template(
-        "contact.html",
-        content=content,
-        theme=content["site"]["colors"],
-        contact=content["pages"]["contact"],
-        page_title=page_title(content, "contact"),
-        body_class=compose_body_class(content),
-    )
-
-
-@app.route("/uploads/<path:filename>")
-def uploaded_file(filename: str):
+def ensure_draft_session() -> str:
     ensure_webroot()
-    return send_from_directory(UPLOAD_FOLDER, filename)
+    draft_id = session.get("draft_id")
+    assert SessionLocal is not None
+    with SessionLocal() as db:
+        record = db.get(Draft, draft_id) if draft_id else None
+        if record is None:
+            draft_id = uuid4().hex
+            content = load_content()
+            db.add(Draft(id=draft_id, value=json.dumps(content, ensure_ascii=False)))
+            db.commit()
+        session["draft_id"] = draft_id
+        session.modified = True
+        return draft_id
 
 
-@app.route("/admin/login", methods=["GET", "POST"])
-def admin_login():
-    if session.get("admin_authenticated"):
-        return redirect(url_for("admin_dashboard"))
-
-    error = None
-    if request.method == "POST":
-        password = request.form.get("password", "")
-        if password == load_admin_password():
-            session["admin_authenticated"] = True
-            next_url = request.args.get("next") or url_for("admin_dashboard")
-            return redirect(next_url)
-        error = "Incorrect password."
-    content = load_content()
-    return render_template(
-        "login.html",
-        content=content,
-        theme=content["site"]["colors"],
-        page_title="Admin",
-        error=error,
-        body_class=compose_body_class(content),
-    )
+def load_draft_content() -> dict:
+    draft_id = ensure_draft_session()
+    assert SessionLocal is not None
+    with SessionLocal() as db:
+        record = db.get(Draft, draft_id)
+        if record is None:
+            return ensure_content_defaults(load_content())
+        return ensure_content_defaults(json.loads(record.value))
 
 
-@app.route("/admin/logout")
-def admin_logout():
-    session.pop("admin_authenticated", None)
-    return redirect(url_for("home"))
+def save_draft_content(data: dict) -> None:
+    draft_id = ensure_draft_session()
+    assert SessionLocal is not None
+    stored_value = json.dumps(data, ensure_ascii=False)
+    with SessionLocal() as db:
+        record = db.get(Draft, draft_id)
+        if record is None:
+            db.add(Draft(id=draft_id, value=stored_value))
+        else:
+            record.value = stored_value
+        db.commit()
 
 
-@app.route("/admin", methods=["GET", "POST"])
-@login_required
-def admin_dashboard():
-    content = load_content()
-    message = session.pop("admin_message", None)
+def clear_draft_content() -> None:
+    draft_id = session.pop("draft_id", None)
+    session.pop("admin_mode", None)
+    if not draft_id:
+        return
+    assert SessionLocal is not None
+    with SessionLocal() as db:
+        record = db.get(Draft, draft_id)
+        if record is not None:
+            db.delete(record)
+            db.commit()
 
-    if request.method == "POST":
-        action = request.form.get("action")
-        if action == "update_content":
-            updated, password_changed = update_content_from_form(content, request.form)
-            save_content(updated)
-            message_text = "Changes saved successfully."
-            if password_changed:
-                message_text += " Admin password updated."
-            session["admin_message"] = message_text
-            return redirect(url_for("admin_dashboard"))
-        if action == "upload_media":
-            file = request.files.get("media")
-            if file and file.filename:
-                filename = secure_filename(file.filename)
-                destination = UPLOAD_FOLDER / filename
-                file.save(destination)
-                session["admin_message"] = f"Uploaded {filename}."
-            else:
-                session["admin_message"] = "Please choose an image to upload."
-            return redirect(url_for("admin_dashboard"))
 
-    uploads = sorted(
+def get_request_content() -> dict:
+    if is_admin_mode():
+        try:
+            return load_draft_content()
+        except Exception:
+            return load_content()
+    return load_content()
+
+
+def list_uploads() -> list[str]:
+    ensure_webroot()
+    if not UPLOAD_FOLDER.exists():
+        return []
+    return sorted(
         [f.name for f in UPLOAD_FOLDER.iterdir() if f.is_file() and not f.name.startswith(".")]
     )
-    password_value = load_admin_password()
-    if not password_value:
-        password_state = "empty"
-    elif password_value == DEFAULT_ADMIN_PASSWORD:
-        password_state = "default"
-    else:
-        password_state = "custom"
-    return render_template(
-        "admin.html",
-        content=content,
-        theme=content["site"]["colors"],
-        home=content["pages"]["home"],
-        services=content["pages"]["services"],
-        contact=content["pages"]["contact"],
-        page_title="Admin",
-        message=message,
-        uploads=uploads,
-        webroot_path=str(WEBROOT_PATH),
-        admin_password_state=password_state,
-        body_class=compose_body_class(content),
-    )
 
 
-def update_content_from_form(content: dict, form: "MultiDict") -> tuple[dict, bool]:
+def safe_next_url(candidate: str | None) -> str:
+    if not candidate:
+        return url_for("home")
+    parsed = urlparse(candidate)
+    if parsed.scheme or parsed.netloc:
+        return url_for("home")
+    if not candidate.startswith("/"):
+        candidate = f"/{candidate}"
+    return candidate
+
+
+def enter_admin_mode() -> None:
+    session["admin_mode"] = True
+    session.modified = True
+    ensure_draft_session()
+
+
+def exit_admin_mode(save_changes: bool) -> None:
+    if save_changes:
+        draft_content = load_draft_content()
+        save_content(draft_content)
+    clear_draft_content()
+
+
+def update_site_settings_from_form(content: dict, form: "MultiDict") -> tuple[dict, bool]:
     ensure_content_defaults(content)
     password_changed = False
     new_password = form.get("admin_password", "").strip()
@@ -311,9 +257,7 @@ def update_content_from_form(content: dict, form: "MultiDict") -> tuple[dict, bo
     content["site"]["name"] = form.get("site_name", content["site"]["name"]).strip()
     content["site"]["tagline"] = form.get("site_tagline", "").strip()
     content["site"]["footer"]["description"] = form.get("footer_description", "").strip()
-    content["site"]["flags"]["show_admin_border"] = bool(
-        form.get("site_show_admin_border")
-    )
+
     colors = content["site"].setdefault("colors", {})
     colors["primary"] = form.get("color_primary", colors.get("primary", "#1d4ed8"))
     colors["primary_dark"] = form.get(
@@ -345,8 +289,10 @@ def update_content_from_form(content: dict, form: "MultiDict") -> tuple[dict, bo
             line_dict["url"] = url
         contact_lines.append(line_dict)
     content["site"]["footer"]["contact"]["lines"] = contact_lines
+    return content, password_changed
 
-    # Home page
+
+def update_home_page_from_form(content: dict, form: "MultiDict") -> dict:
     home = content["pages"]["home"]
     home["hero"]["badge"] = form.get("home_hero_badge", "").strip()
     home["hero"]["title"] = form.get("home_hero_title", "").strip()
@@ -357,15 +303,15 @@ def update_content_from_form(content: dict, form: "MultiDict") -> tuple[dict, bo
     home["hero"]["image_alt"] = form.get("home_hero_image_alt", "").strip()
 
     home["what_we_print"]["title"] = form.get("home_what_we_print_heading", "").strip()
-    home["what_we_print"]["items"] = parse_cards_with_bullets(
-        form, "home_what_we_print"
-    )
+    home["what_we_print"]["items"] = parse_cards_with_bullets(form, "home_what_we_print")
     home["why_choose"]["title"] = form.get("home_why_choose_heading", "").strip()
     home["why_choose"]["items"] = parse_cards(form, "home_why_choose")
     home["testimonials"]["title"] = form.get("home_testimonials_heading", "").strip()
     home["testimonials"]["items"] = parse_testimonials(form)
+    return home
 
-    # Services page
+
+def update_services_page_from_form(content: dict, form: "MultiDict") -> dict:
     services = content["pages"]["services"]
     services["hero"]["badge"] = form.get("services_hero_badge", "").strip()
     services["hero"]["title"] = form.get("services_hero_title", "").strip()
@@ -387,8 +333,10 @@ def update_content_from_form(content: dict, form: "MultiDict") -> tuple[dict, bo
     ).strip()
     services["process"]["cta"]["text"] = form.get("services_process_cta_text", "").strip()
     services["process"]["cta"]["link"] = form.get("services_process_cta_link", "").strip()
+    return services
 
-    # Contact page
+
+def update_contact_page_from_form(content: dict, form: "MultiDict") -> dict:
     contact = content["pages"]["contact"]
     contact["hero"]["badge"] = form.get("contact_hero_badge", "").strip()
     contact["hero"]["title"] = form.get("contact_hero_title", "").strip()
@@ -411,7 +359,242 @@ def update_content_from_form(content: dict, form: "MultiDict") -> tuple[dict, bo
     contact["about"]["title"] = form.get("contact_about_title", "").strip()
     contact["about"]["description"] = form.get("contact_about_description", "").strip()
     contact["about"]["cards"] = parse_about_cards(form)
+    return contact
 
+
+def apply_page_update(content: dict, form: "MultiDict", page_key: str) -> dict:
+    if page_key == "home":
+        return update_home_page_from_form(content, form)
+    if page_key == "services":
+        return update_services_page_from_form(content, form)
+    if page_key == "contact":
+        return update_contact_page_from_form(content, form)
+    raise ValueError(f"Unsupported page key: {page_key}")
+
+
+def login_required(view):
+    @wraps(view)
+    def wrapped(*args, **kwargs):
+        if not session.get("admin_authenticated"):
+            return redirect(url_for("admin_login", next=request.path))
+        return view(*args, **kwargs)
+
+    return wrapped
+
+
+def split_lines(value: str) -> list[str]:
+    return [line.strip() for line in value.splitlines() if line.strip()]
+
+
+def page_title(content: dict, page_key: str) -> str:
+    meta = content["pages"].get(page_key, {}).get("meta", {})
+    return meta.get("title") or content["site"].get("tagline") or content["site"]["name"]
+
+
+def compose_body_class(content: dict, *extra_classes: str) -> str:
+    ensure_content_defaults(content)
+    classes = [cls for cls in extra_classes if cls]
+    if is_admin_mode():
+        classes.extend(["admin-border", "admin-mode-active"])
+    seen: dict[str, None] = {}
+    for cls in classes:
+        if cls:
+            seen.setdefault(cls, None)
+    return " ".join(seen.keys()).strip()
+
+
+@app.route("/")
+def home():
+    content = get_request_content()
+    admin_mode = is_admin_mode()
+    uploads = list_uploads() if admin_mode else []
+    if should_use_mobile_alt(request):
+        return render_mobile_home(content)
+    return render_template(
+        "index.html",
+        content=content,
+        theme=content["site"]["colors"],
+        home=content["pages"]["home"],
+        page_title=page_title(content, "home"),
+        body_class=compose_body_class(content),
+        admin_mode=admin_mode,
+        editor_uploads=uploads,
+        page_key="home",
+    )
+
+
+@app.route("/mobile")
+def mobile_home():
+    content = get_request_content()
+    return render_mobile_home(content)
+
+
+@app.route("/services")
+def services_page():
+    content = get_request_content()
+    admin_mode = is_admin_mode()
+    uploads = list_uploads() if admin_mode else []
+    return render_template(
+        "services.html",
+        content=content,
+        theme=content["site"]["colors"],
+        services=content["pages"]["services"],
+        page_title=page_title(content, "services"),
+        body_class=compose_body_class(content),
+        admin_mode=admin_mode,
+        editor_uploads=uploads,
+        page_key="services",
+    )
+
+
+@app.route("/contact")
+def contact_page():
+    content = get_request_content()
+    admin_mode = is_admin_mode()
+    uploads = list_uploads() if admin_mode else []
+    return render_template(
+        "contact.html",
+        content=content,
+        theme=content["site"]["colors"],
+        contact=content["pages"]["contact"],
+        page_title=page_title(content, "contact"),
+        body_class=compose_body_class(content),
+        admin_mode=admin_mode,
+        editor_uploads=uploads,
+        page_key="contact",
+    )
+
+
+@app.route("/uploads/<path:filename>")
+def uploaded_file(filename: str):
+    ensure_webroot()
+    return send_from_directory(UPLOAD_FOLDER, filename)
+
+
+@app.route("/admin/login", methods=["GET", "POST"])
+def admin_login():
+    if session.get("admin_authenticated"):
+        return redirect(url_for("admin_dashboard"))
+
+    error = None
+    if request.method == "POST":
+        password = request.form.get("password", "")
+        if password == load_admin_password():
+            session["admin_authenticated"] = True
+            next_url = request.args.get("next") or url_for("admin_dashboard")
+            return redirect(next_url)
+        error = "Incorrect password."
+    content = get_request_content()
+    return render_template(
+        "login.html",
+        content=content,
+        theme=content["site"]["colors"],
+        page_title="Admin",
+        error=error,
+        body_class=compose_body_class(content),
+        admin_mode=is_admin_mode(),
+    )
+
+
+@app.route("/admin/logout")
+def admin_logout():
+    session.pop("admin_authenticated", None)
+    return redirect(url_for("home"))
+
+
+@app.route("/admin", methods=["GET", "POST"])
+@login_required
+def admin_dashboard():
+    content = load_content()
+    message = session.pop("admin_message", None)
+    admin_mode_active = is_admin_mode()
+
+    if request.method == "POST":
+        action = request.form.get("action")
+        if action == "update_site_settings":
+            updated, password_changed = update_site_settings_from_form(
+                content, request.form
+            )
+            save_content(updated)
+            message_text = "Changes saved successfully."
+            if password_changed:
+                message_text += " Admin password updated."
+            session["admin_message"] = message_text
+            return redirect(url_for("admin_dashboard"))
+        if action == "upload_media":
+            file = request.files.get("media")
+            if file and file.filename:
+                filename = secure_filename(file.filename)
+                destination = UPLOAD_FOLDER / filename
+                file.save(destination)
+                session["admin_message"] = f"Uploaded {filename}."
+            else:
+                session["admin_message"] = "Please choose an image to upload."
+            return redirect(url_for("admin_dashboard"))
+
+    uploads = list_uploads()
+    password_value = load_admin_password()
+    if not password_value:
+        password_state = "empty"
+    elif password_value == DEFAULT_ADMIN_PASSWORD:
+        password_state = "default"
+    else:
+        password_state = "custom"
+    return render_template(
+        "admin.html",
+        content=content,
+        theme=content["site"]["colors"],
+        home=content["pages"]["home"],
+        services=content["pages"]["services"],
+        contact=content["pages"]["contact"],
+        page_title="Admin",
+        message=message,
+        uploads=uploads,
+        webroot_path=str(WEBROOT_PATH),
+        admin_password_state=password_state,
+        body_class=compose_body_class(content),
+        admin_mode=admin_mode_active,
+    )
+
+
+@app.route("/admin/mode", methods=["POST"])
+@login_required
+def admin_mode_toggle():
+    action = request.form.get("action")
+    next_url = safe_next_url(request.form.get("next") or request.referrer)
+    if action == "enter":
+        enter_admin_mode()
+        session["admin_message"] = "Admin mode enabled. Edit pages directly and save when finished."
+    elif action == "save_exit":
+        exit_admin_mode(save_changes=True)
+        session["admin_message"] = "Draft changes published and admin mode exited."
+    elif action == "discard_exit":
+        exit_admin_mode(save_changes=False)
+        session["admin_message"] = "Draft discarded. Admin mode exited."
+    return redirect(next_url)
+
+
+@app.route("/admin/draft/<page_key>", methods=["POST"])
+@login_required
+def update_draft(page_key: str):
+    if not is_admin_mode():
+        return jsonify({"error": "Admin mode is not active."}), 400
+
+    try:
+        content = load_draft_content()
+        apply_page_update(content, request.form, page_key)
+        save_draft_content(content)
+        page_data = content["pages"].get(page_key, {})
+        return jsonify({"page": page_data, "site": content["site"]})
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+
+
+def update_content_from_form(content: dict, form: "MultiDict") -> tuple[dict, bool]:
+    content, password_changed = update_site_settings_from_form(content, form)
+    update_home_page_from_form(content, form)
+    update_services_page_from_form(content, form)
+    update_contact_page_from_form(content, form)
     return content, password_changed
 
 
@@ -424,6 +607,7 @@ def render_mobile_home(content: dict):
         page_title=page_title(content, "home"),
         body_class=compose_body_class(content, "mobile-alt"),
         using_mobile_alt=True,
+        admin_mode=is_admin_mode(),
     )
 
 

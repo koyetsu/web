@@ -25,7 +25,31 @@
     </style>
     {% block extra_head %}{% endblock %}
   </head>
-  <body class="{{ body_class|default('', true) }}">
+  <body
+    class="{{ body_class|default('', true) }}"
+    data-page-key="{{ page_key|default('', true) }}"
+    data-admin-mode="{{ 1 if admin_mode|default(false) else 0 }}"
+  >
+    {% if admin_mode|default(false) %}
+      <div class="admin-toolbar" role="status">
+        <span class="admin-toolbar__label">Admin mode is active</span>
+        <a class="admin-toolbar__link" href="{{ url_for('admin_dashboard') }}">Site settings</a>
+        <form method="post" action="{{ url_for('admin_mode_toggle') }}">
+          <input type="hidden" name="action" value="save_exit" />
+          <input type="hidden" name="next" value="{{ request.path }}" />
+          <button type="submit" class="admin-toolbar__button admin-toolbar__button--primary">
+            Save &amp; exit
+          </button>
+        </form>
+        <form method="post" action="{{ url_for('admin_mode_toggle') }}">
+          <input type="hidden" name="action" value="discard_exit" />
+          <input type="hidden" name="next" value="{{ request.path }}" />
+          <button type="submit" class="admin-toolbar__button admin-toolbar__button--ghost">
+            Discard draft
+          </button>
+        </form>
+      </div>
+    {% endif %}
     <header>
       <div class="navbar">
         <a class="logo" href="{{ url_for('home') }}">{{ content.site.name }}</a>
@@ -92,6 +116,9 @@
     <script>
       document.getElementById('year').textContent = new Date().getFullYear();
     </script>
+    {% if admin_mode|default(false) %}
+      <script src="{{ url_for('static', filename='js/admin-mode.js') }}" defer></script>
+    {% endif %}
     {% block extra_scripts %}{% endblock %}
   </body>
 </html>
