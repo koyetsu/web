@@ -101,6 +101,15 @@ def _build_default_printer_image_map() -> dict[tuple[str | None, str | None], di
 
 DEFAULT_STORE_PAGE_TEMPLATE, DEFAULT_STORE_NAV_ITEM = _load_default_store_assets()
 DEFAULT_PRINTER_IMAGE_MAP = _build_default_printer_image_map()
+LEGACY_PRINTER_IMAGE_PATTERNS: dict[tuple[str | None, str | None], list[str]] = {
+    (
+        "Canon",
+        "imageCLASS MF269dw II",
+    ): [
+        "usa.canon.com/content/dam/usa/en/products/printers/imageclass/mf269dw-ii",
+        "rmsupport.canon.com",
+    ],
+}
 
 
 def _merge_defaults(target: dict, defaults: dict) -> dict:
@@ -242,16 +251,27 @@ def ensure_printer_inventory_defaults(inventory: dict) -> tuple[dict, bool]:
             if not isinstance(model.get("cartridges"), list):
                 model["cartridges"] = []
                 changed = True
-            defaults = DEFAULT_PRINTER_IMAGE_MAP.get((manufacturer.get("name"), model.get("model")))
+            manufacturer_name = manufacturer.get("name")
+            model_name = model.get("model")
+            defaults = DEFAULT_PRINTER_IMAGE_MAP.get((manufacturer_name, model_name))
+            legacy_patterns = LEGACY_PRINTER_IMAGE_PATTERNS.get((manufacturer_name, model_name), [])
             if defaults:
                 desired_image = defaults.get("image") or ""
                 desired_alt = defaults.get("image_alt") or ""
                 current_image = model.get("image") or ""
                 if desired_image:
-                    if not current_image or current_image.startswith("/static/img/printers/") or current_image == desired_image:
-                        if current_image != desired_image:
-                            model["image"] = desired_image
-                            changed = True
+                    should_override = False
+                    if (
+                        not current_image
+                        or current_image.startswith("/static/img/printers/")
+                        or current_image == desired_image
+                    ):
+                        should_override = True
+                    elif any(pattern in current_image for pattern in legacy_patterns):
+                        should_override = True
+                    if should_override and current_image != desired_image:
+                        model["image"] = desired_image
+                        changed = True
                 if desired_alt:
                     current_alt = model.get("image_alt") or ""
                     if (not current_alt or current_alt.startswith("Stylized illustration")) and current_alt != desired_alt:
