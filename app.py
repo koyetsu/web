@@ -149,6 +149,10 @@ def save_content(data: dict) -> None:
         session.commit()
 
 
+def is_admin_authenticated() -> bool:
+    return bool(session.get("admin_authenticated"))
+
+
 def is_admin_mode() -> bool:
     return bool(session.get("admin_mode"))
 
@@ -193,6 +197,7 @@ def save_draft_content(data: dict) -> None:
 
 
 def clear_draft_content() -> None:
+    ensure_webroot()
     draft_id = session.pop("draft_id", None)
     session.pop("admin_mode", None)
     if not draft_id:
@@ -375,11 +380,16 @@ def apply_page_update(content: dict, form: "MultiDict", page_key: str) -> dict:
 def login_required(view):
     @wraps(view)
     def wrapped(*args, **kwargs):
-        if not session.get("admin_authenticated"):
+        if not is_admin_authenticated():
             return redirect(url_for("admin_login", next=request.path))
         return view(*args, **kwargs)
 
     return wrapped
+
+
+@app.context_processor
+def inject_admin_session_state() -> dict:
+    return {"admin_authenticated": is_admin_authenticated()}
 
 
 def split_lines(value: str) -> list[str]:
@@ -473,7 +483,9 @@ def uploaded_file(filename: str):
 
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
-    if session.get("admin_authenticated"):
+    if request.method == "GET":
+        session.pop("admin_authenticated", None)
+    if is_admin_authenticated():
         return redirect(url_for("admin_dashboard"))
 
     error = None
@@ -498,6 +510,7 @@ def admin_login():
 
 @app.route("/admin/logout")
 def admin_logout():
+    clear_draft_content()
     session.pop("admin_authenticated", None)
     return redirect(url_for("home"))
 
