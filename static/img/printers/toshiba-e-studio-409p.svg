@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-labelledby="title desc">
+  <title id="title">e-STUDIO 409p illustration</title>
+  <desc id="desc">Stylized illustration of the e-STUDIO 409p laser printer from Toshiba.</desc>
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#9333ea" />
+      <stop offset="100%" stop-color="#5b21b6" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#grad)" rx="32" />
+  <g transform="translate(120 120)">
+    <rect x="0" y="60" width="400" height="180" rx="28" fill="#f8fafc" opacity="0.94" />
+    <rect x="20" y="80" width="360" height="80" rx="12" fill="#e2e8f0" />
+    <rect x="120" y="0" width="160" height="80" rx="14" fill="#1f2937" opacity="0.9" />
+    <rect x="70" y="180" width="260" height="36" rx="12" fill="#cbd5f5" opacity="0.9" />
+    <circle cx="320" cy="190" r="12" fill="#9333ea" opacity="0.8" />
+  </g>
+  <text x="320" y="360" text-anchor="middle" font-family="'Inter', 'Segoe UI', sans-serif" font-size="36" fill="#f8fafc" font-weight="600">Toshiba</text>
+  <text x="320" y="404" text-anchor="middle" font-family="'Inter', 'Segoe UI', sans-serif" font-size="28" fill="#f8fafc">e-STUDIO 409p</text>
+</svg>

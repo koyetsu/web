@@ -3,9 +3,22 @@
     "name": "BlueWave Print Studio",
     "tagline": "Local print experts serving the Coastal Bend",
     "navigation": [
-      { "label": "Home", "url": "/" },
-      { "label": "Services", "url": "/services" },
-      { "label": "Contact & About", "url": "/contact" }
+      {
+        "label": "Home",
+        "url": "/"
+      },
+      {
+        "label": "Services",
+        "url": "/services"
+      },
+      {
+        "label": "Store",
+        "url": "/store"
+      },
+      {
+        "label": "Contact & About",
+        "url": "/contact"
+      }
     ],
     "colors": {
       "primary": "#1d4ed8",
@@ -28,9 +41,18 @@
       "contact": {
         "title": "Contact",
         "lines": [
-          { "label": "(361) 555-0198", "url": "tel:13615550198" },
-          { "label": "hello@bluewaveprint.com", "url": "mailto:hello@bluewaveprint.com" },
-          { "label": "Start a project →", "url": "/contact" }
+          {
+            "label": "(361) 555-0198",
+            "url": "tel:13615550198"
+          },
+          {
+            "label": "hello@bluewaveprint.com",
+            "url": "mailto:hello@bluewaveprint.com"
+          },
+          {
+            "label": "Start a project →",
+            "url": "/contact"
+          }
         ]
       },
       "copyright": "All rights reserved."
@@ -38,7 +60,9 @@
   },
   "pages": {
     "home": {
-      "meta": { "title": "Local Print Experts" },
+      "meta": {
+        "title": "Local Print Experts"
+      },
       "hero": {
         "badge": "Locally owned • Est. 1998",
         "title": "Modern printing crafted for businesses that move fast",
@@ -128,7 +152,9 @@
       }
     },
     "services": {
-      "meta": { "title": "Print Services" },
+      "meta": {
+        "title": "Print Services"
+      },
       "hero": {
         "badge": "Fast timelines • Expert finishing",
         "title": "Services engineered to make your brand look its best",
@@ -238,7 +264,9 @@
       }
     },
     "contact": {
-      "meta": { "title": "Contact BlueWave Print Studio" },
+      "meta": {
+        "title": "Contact BlueWave Print Studio"
+      },
       "hero": {
         "badge": "We answer within one business hour",
         "title": "Let’s bring your next print idea to life",
@@ -308,6 +336,41 @@
             "description": "From branding refreshes to multi-location signage rollouts, we serve as a dedicated print partner for 200+ area businesses."
           }
         ]
+      }
+    },
+    "store": {
+      "meta": {
+        "title": "Printer Store"
+      },
+      "hero": {
+        "badge": "Printer Store",
+        "title": "Shop enterprise-ready laser printers",
+        "description": "Explore curated HP, Canon, Kyocera, and Toshiba models with toner pairings we trust for reliable office output.",
+        "cta_text": "Talk with a print specialist",
+        "cta_link": "/contact"
+      },
+      "promises": {
+        "title": "Every order includes",
+        "items": [
+          {
+            "title": "Configured for your workflow",
+            "description": "We stage firmware updates, network settings, and driver bundles so installations are plug-and-play."
+          },
+          {
+            "title": "Guaranteed supply matching",
+            "description": "Each listing includes the toner SKUs we stock, so you never guess about refills."
+          },
+          {
+            "title": "Local service and delivery",
+            "description": "Our technicians can deliver, install, and keep your fleet humming across the Coastal Bend."
+          }
+        ]
+      },
+      "support": {
+        "title": "Need a tailored print plan?",
+        "description": "Bundle printers, managed supplies, and priority service into one agreement built for your team.",
+        "cta_text": "Request a custom quote",
+        "cta_link": "/contact"
       }
     }
   }

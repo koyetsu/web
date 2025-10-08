@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% if admin_mode %}
+    <div class="page-editor is-open" data-page-editor="store">
+      <div class="page-editor__header">
+        <h2 class="page-editor__title">Store page editor</h2>
+        <button type="button" class="page-editor__toggle" data-editor-toggle>Hide editor</button>
+      </div>
+      <form class="page-editor__body" data-editor-form>
+        <input type="hidden" name="page" value="store" />
+        <p class="editor-hint">Updates apply to the preview while admin mode is active. Exit admin mode to publish.</p>
+        <div class="form-fields">
+          <label>Hero badge <input type="text" name="store_hero_badge" value="{{ store.hero.badge }}" /></label>
+          <label>Hero title <input type="text" name="store_hero_title" value="{{ store.hero.title }}" /></label>
+          <label>
+            Hero description
+            <textarea name="store_hero_description">{{ store.hero.description }}</textarea>
+          </label>
+          <label>Hero CTA text <input type="text" name="store_hero_cta_text" value="{{ store.hero.cta_text }}" /></label>
+          <label>Hero CTA link <input type="text" name="store_hero_cta_link" value="{{ store.hero.cta_link }}" /></label>
+        </div>
+
+        <h3>{{ store.promises.title }}</h3>
+        <div class="form-fields">
+          <label>Highlights heading
+            <input type="text" name="store_promises_heading" value="{{ store.promises.title }}" />
+          </label>
+        </div>
+        <div class="collection-wrapper">
+          <div class="collection" data-collection="store_promises">
+            {% for item in store.promises['items'] %}
+              <div class="collection-item">
+                <div class="collection-item-header">
+                  <strong>Highlight {{ loop.index }}</strong>
+                  <button type="button" class="remove-item">Remove</button>
+                </div>
+                <label>Title <input type="text" name="store_promises_title" value="{{ item.title }}" /></label>
+                <label>Description <textarea name="store_promises_description">{{ item.description }}</textarea></label>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-item" data-template="store_promises_template">Add highlight</button>
+        </div>
+        <template id="store_promises_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New highlight</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="store_promises_title" /></label>
+            <label>Description <textarea name="store_promises_description"></textarea></label>
+          </div>
+        </template>
+
+        <h3>Support block</h3>
+        <div class="form-fields">
+          <label>Title <input type="text" name="store_support_title" value="{{ store.support.title }}" /></label>
+          <label>
+            Description
+            <textarea name="store_support_description">{{ store.support.description }}</textarea>
+          </label>
+          <label>CTA text <input type="text" name="store_support_cta_text" value="{{ store.support.cta_text }}" /></label>
+          <label>CTA link <input type="text" name="store_support_cta_link" value="{{ store.support.cta_link }}" /></label>
+        </div>
+      </form>
+    </div>
+  {% endif %}
+
+  <section class="hero store-hero" data-preview-section="store-hero">
+    <div class="hero-content store-hero__content">
+      <div class="store-hero__copy">
+        <span class="badge" data-slot="store.hero.badge">{{ store.hero.badge }}</span>
+        <h1 data-slot="store.hero.title">{{ store.hero.title }}</h1>
+        <p data-slot="store.hero.description">{{ store.hero.description }}</p>
+        <a class="primary-button" href="{{ store.hero.cta_link }}" data-slot-link="store.hero.cta">
+          {{ store.hero.cta_text }}
+        </a>
+      </div>
+      <div class="store-hero__stats">
+        <div class="store-hero__stat">
+          <strong>{{ inventory_count }}</strong>
+          <span>Printers curated</span>
+        </div>
+        <div class="store-hero__stat">
+          <strong>9</strong>
+          <span>Displayed per page</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt store-promises" data-preview-section="store-promises">
+    <div class="grid">
+      <h2 data-slot="store.promises.title">{{ store.promises.title }}</h2>
+      <div class="grid grid-3 store-promises__items" data-repeat="store.promises.items">
+        {% for item in store.promises['items'] %}
+          <article class="card store-promise">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <template id="tpl-store-promise">
+    <article class="card store-promise">
+      <h3></h3>
+      <p></p>
+    </article>
+  </template>
+
+  <section class="section store-grid">
+    <div class="grid">
+      <div class="store-grid__intro">
+        <div>
+          <h2>Laser printers &amp; toner bundles</h2>
+          <p>Browse enterprise-ready laser printers from HP, Canon, Kyocera, and Toshiba. Each card pairs the printer with the toner we keep in stock for next-day delivery.</p>
+        </div>
+        <div class="store-grid__meta">
+          <span>Showing {{ printers|length }} of {{ inventory_count }} models</span>
+        </div>
+      </div>
+      <div class="store-grid__items">
+        {% for printer in printers %}
+          <article class="product-card">
+            <div class="product-card__media">
+              <img src="{{ printer.image }}" alt="{{ printer.image_alt }}" loading="lazy" width="640" height="480" />
+            </div>
+            <div class="product-card__body">
+              <span class="product-card__manufacturer">{{ printer.manufacturer }}</span>
+              <h3>{{ printer.model }}</h3>
+              <ul class="product-card__meta">
+                {% if printer.release_year %}
+                  <li><span>Release year</span><strong>{{ printer.release_year }}</strong></li>
+                {% endif %}
+                {% if printer.category %}
+                  <li><span>Category</span><strong>{{ printer.category }}</strong></li>
+                {% endif %}
+                <li><span>Compatible cartridges</span><strong>{{ printer.cartridges|length }}</strong></li>
+              </ul>
+              <div class="product-card__toner">
+                <h4>Compatible toner</h4>
+                <ul>
+                  {% for cartridge in printer.cartridges %}
+                    <li>
+                      <span class="product-card__toner-name">{{ cartridge.name }}</span>
+                      {% if cartridge.part_number %}
+                        <span class="product-card__toner-sku">{{ cartridge.part_number }}</span>
+                      {% endif %}
+                      {% if cartridge.yield_pages %}
+                        <span class="product-card__toner-yield">{{ '{:,}'.format(cartridge.yield_pages) }} pages</span>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <div class="product-card__actions">
+                <a
+                  class="primary-button"
+                  href="{{ url_for('contact_page') }}?subject={{ ('Order ' ~ printer.manufacturer ~ ' ' ~ printer.model ~ ' Printer') | urlencode }}"
+                >
+                  Buy printer
+                </a>
+                <a
+                  class="ghost-button"
+                  href="{{ url_for('contact_page') }}?subject={{ ('Order toner for ' ~ printer.manufacturer ~ ' ' ~ printer.model) | urlencode }}"
+                >
+                  Buy toner
+                </a>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+        {% if printers|length == 0 %}
+          <div class="store-grid__empty">
+            <p>No printers available in this view. Try another page.</p>
+          </div>
+        {% endif %}
+      </div>
+      {% if pagination.total_pages > 1 %}
+        <nav class="store-grid__pagination" aria-label="Printer pagination">
+          <ul>
+            <li>
+              <a
+                class="ghost-button{% if not pagination.has_prev %} disabled{% endif %}"
+                {% if pagination.has_prev %}
+                  href="{{ url_for('store_page', page=pagination.prev_page) }}"
+                {% else %}
+                  aria-disabled="true"
+                {% endif %}
+              >
+                Previous
+              </a>
+            </li>
+            {% for number in pagination.pages %}
+              <li>
+                <a
+                  class="ghost-button{% if number == pagination.page %} active{% endif %}"
+                  {% if number == pagination.page %}
+                    aria-current="page"
+                  {% endif %}
+                  href="{{ url_for('store_page', page=number) }}"
+                >
+                  {{ number }}
+                </a>
+              </li>
+            {% endfor %}
+            <li>
+              <a
+                class="ghost-button{% if not pagination.has_next %} disabled{% endif %}"
+                {% if pagination.has_next %}
+                  href="{{ url_for('store_page', page=pagination.next_page) }}"
+                {% else %}
+                  aria-disabled="true"
+                {% endif %}
+              >
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="section store-support" data-preview-section="store-support">
+    <div class="grid">
+      <div class="store-support__card">
+        <div>
+          <h2 data-slot="store.support.title">{{ store.support.title }}</h2>
+          <p data-slot="store.support.description">{{ store.support.description }}</p>
+        </div>
+        <a class="primary-button" href="{{ store.support.cta_link }}" data-slot-link="store.support.cta">
+          {{ store.support.cta_text }}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {% if manufacturer_notes %}
+    <section class="section store-notes">
+      <div class="grid store-notes__grid">
+        {% for note in manufacturer_notes %}
+          <article class="card store-note">
+            <h3>{{ note.manufacturer }}</h3>
+            <p>{{ note.note }}</p>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+{% endblock %}

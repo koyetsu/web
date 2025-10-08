@@ -1,0 +1,387 @@
+{
+  "generated_at": "2024-05-20",
+  "metadata": {
+    "description": "Laser printer models introduced between 2009 and 2024 with their compatible toner cartridges."
+  },
+  "manufacturers": [
+    {
+      "name": "HP",
+      "models": [
+        {
+          "model": "LaserJet Pro M404n",
+          "category": "Monochrome laser printer",
+          "release_year": 2019,
+          "cartridges": [
+            {
+              "name": "HP 58A Black Original LaserJet Toner Cartridge",
+              "part_number": "CF258A",
+              "yield_pages": 3000
+            },
+            {
+              "name": "HP 58X High Yield Black Original LaserJet Toner Cartridge",
+              "part_number": "CF258X",
+              "yield_pages": 10000
+            }
+          ],
+          "image": "/static/img/printers/hp-laserjet-pro-m404n.svg",
+          "image_alt": "Stylized illustration of the HP LaserJet Pro M404n laser printer"
+        },
+        {
+          "model": "LaserJet Pro M203dw",
+          "category": "Monochrome laser printer",
+          "release_year": 2017,
+          "cartridges": [
+            {
+              "name": "HP 30A Black Original LaserJet Toner Cartridge",
+              "part_number": "CF230A",
+              "yield_pages": 1600
+            },
+            {
+              "name": "HP 30X High Yield Black Original LaserJet Toner Cartridge",
+              "part_number": "CF230X",
+              "yield_pages": 3500
+            }
+          ],
+          "image": "/static/img/printers/hp-laserjet-pro-m203dw.svg",
+          "image_alt": "Stylized illustration of the HP LaserJet Pro M203dw laser printer"
+        },
+        {
+          "model": "LaserJet Enterprise M507dn",
+          "category": "Monochrome laser printer",
+          "release_year": 2019,
+          "cartridges": [
+            {
+              "name": "HP 89A Black Original LaserJet Toner Cartridge",
+              "part_number": "CF289A",
+              "yield_pages": 5000
+            },
+            {
+              "name": "HP 89X High Yield Black Original LaserJet Toner Cartridge",
+              "part_number": "CF289X",
+              "yield_pages": 10000
+            },
+            {
+              "name": "HP 89Y Extra High Yield Black Original LaserJet Toner Cartridge",
+              "part_number": "CF289Y",
+              "yield_pages": 20000
+            }
+          ],
+          "image": "/static/img/printers/hp-laserjet-enterprise-m507dn.svg",
+          "image_alt": "Stylized illustration of the HP LaserJet Enterprise M507dn laser printer"
+        },
+        {
+          "model": "Color LaserJet Pro M454dw",
+          "category": "Color laser printer",
+          "release_year": 2019,
+          "cartridges": [
+            {
+              "name": "HP 414A Black Original LaserJet Toner Cartridge",
+              "part_number": "W2020A",
+              "yield_pages": 2400
+            },
+            {
+              "name": "HP 414A Cyan Original LaserJet Toner Cartridge",
+              "part_number": "W2021A",
+              "yield_pages": 2100
+            },
+            {
+              "name": "HP 414A Magenta Original LaserJet Toner Cartridge",
+              "part_number": "W2023A",
+              "yield_pages": 2100
+            },
+            {
+              "name": "HP 414A Yellow Original LaserJet Toner Cartridge",
+              "part_number": "W2022A",
+              "yield_pages": 2100
+            },
+            {
+              "name": "HP 414X High Yield Black Original LaserJet Toner Cartridge",
+              "part_number": "W2020X",
+              "yield_pages": 7500
+            },
+            {
+              "name": "HP 414X High Yield Cyan Original LaserJet Toner Cartridge",
+              "part_number": "W2021X",
+              "yield_pages": 6000
+            },
+            {
+              "name": "HP 414X High Yield Magenta Original LaserJet Toner Cartridge",
+              "part_number": "W2023X",
+              "yield_pages": 6000
+            },
+            {
+              "name": "HP 414X High Yield Yellow Original LaserJet Toner Cartridge",
+              "part_number": "W2022X",
+              "yield_pages": 6000
+            }
+          ],
+          "image": "/static/img/printers/hp-color-laserjet-pro-m454dw.svg",
+          "image_alt": "Stylized illustration of the HP Color LaserJet Pro M454dw laser printer"
+        }
+      ]
+    },
+    {
+      "name": "Canon",
+      "models": [
+        {
+          "model": "imageCLASS LBP6230dw",
+          "category": "Monochrome laser printer",
+          "release_year": 2014,
+          "cartridges": [
+            {
+              "name": "Canon 126 Black Toner Cartridge",
+              "part_number": "3483B001",
+              "yield_pages": 2100
+            }
+          ],
+          "image": "/static/img/printers/canon-imageclass-lbp6230dw.svg",
+          "image_alt": "Stylized illustration of the Canon imageCLASS LBP6230dw laser printer"
+        },
+        {
+          "model": "imageCLASS MF445dw",
+          "category": "Monochrome laser multifunction",
+          "release_year": 2020,
+          "cartridges": [
+            {
+              "name": "Canon 057 Black Toner Cartridge",
+              "part_number": "3010C001",
+              "yield_pages": 3100
+            },
+            {
+              "name": "Canon 057H High Yield Black Toner Cartridge",
+              "part_number": "3010C002",
+              "yield_pages": 10000
+            }
+          ],
+          "image": "/static/img/printers/canon-imageclass-mf445dw.svg",
+          "image_alt": "Stylized illustration of the Canon imageCLASS MF445dw laser printer"
+        },
+        {
+          "model": "imageCLASS LBP226dw",
+          "category": "Monochrome laser printer",
+          "release_year": 2020,
+          "cartridges": [
+            {
+              "name": "Canon 052 Black Toner Cartridge",
+              "part_number": "2199C001",
+              "yield_pages": 3100
+            },
+            {
+              "name": "Canon 052H High Yield Black Toner Cartridge",
+              "part_number": "2200C001",
+              "yield_pages": 9200
+            }
+          ],
+          "image": "/static/img/printers/canon-imageclass-lbp226dw.svg",
+          "image_alt": "Stylized illustration of the Canon imageCLASS LBP226dw laser printer"
+        },
+        {
+          "model": "imageCLASS MF269dw II",
+          "category": "Monochrome laser multifunction",
+          "release_year": 2021,
+          "cartridges": [
+            {
+              "name": "Canon 051 Black Toner Cartridge",
+              "part_number": "2168C001",
+              "yield_pages": 1700
+            },
+            {
+              "name": "Canon 051H High Yield Black Toner Cartridge",
+              "part_number": "2169C001",
+              "yield_pages": 4100
+            }
+          ],
+          "image": "/static/img/printers/canon-imageclass-mf269dw-ii.svg",
+          "image_alt": "Stylized illustration of the Canon imageCLASS MF269dw II laser printer"
+        }
+      ]
+    },
+    {
+      "name": "Kyocera",
+      "models": [
+        {
+          "model": "ECOSYS P2040dw",
+          "category": "Monochrome laser printer",
+          "release_year": 2017,
+          "cartridges": [
+            {
+              "name": "Kyocera TK-1178 Toner Kit",
+              "part_number": "1T02S50US0",
+              "yield_pages": 7200
+            }
+          ],
+          "image": "/static/img/printers/kyocera-ecosys-p2040dw.svg",
+          "image_alt": "Stylized illustration of the Kyocera ECOSYS P2040dw laser printer"
+        },
+        {
+          "model": "ECOSYS M5526cdw",
+          "category": "Color laser multifunction",
+          "release_year": 2017,
+          "cartridges": [
+            {
+              "name": "Kyocera TK-5242K Black Toner Kit",
+              "part_number": "1T02R9CUS0",
+              "yield_pages": 4000
+            },
+            {
+              "name": "Kyocera TK-5242C Cyan Toner Kit",
+              "part_number": "1T02R9CUS1",
+              "yield_pages": 3000
+            },
+            {
+              "name": "Kyocera TK-5242M Magenta Toner Kit",
+              "part_number": "1T02R9CUS2",
+              "yield_pages": 3000
+            },
+            {
+              "name": "Kyocera TK-5242Y Yellow Toner Kit",
+              "part_number": "1T02R9CUS3",
+              "yield_pages": 3000
+            }
+          ],
+          "image": "/static/img/printers/kyocera-ecosys-m5526cdw.svg",
+          "image_alt": "Stylized illustration of the Kyocera ECOSYS M5526cdw laser printer"
+        },
+        {
+          "model": "ECOSYS P3155dn",
+          "category": "Monochrome laser printer",
+          "release_year": 2019,
+          "cartridges": [
+            {
+              "name": "Kyocera TK-3192 Toner Kit",
+              "part_number": "1T02T80US0",
+              "yield_pages": 25000
+            }
+          ],
+          "image": "/static/img/printers/kyocera-ecosys-p3155dn.svg",
+          "image_alt": "Stylized illustration of the Kyocera ECOSYS P3155dn laser printer"
+        },
+        {
+          "model": "ECOSYS P6235cdn",
+          "category": "Color laser printer",
+          "release_year": 2019,
+          "cartridges": [
+            {
+              "name": "Kyocera TK-5272K Black Toner Kit",
+              "part_number": "1T02TV0US0",
+              "yield_pages": 26000
+            },
+            {
+              "name": "Kyocera TK-5272C Cyan Toner Kit",
+              "part_number": "1T02TV0US1",
+              "yield_pages": 19000
+            },
+            {
+              "name": "Kyocera TK-5272M Magenta Toner Kit",
+              "part_number": "1T02TV0US2",
+              "yield_pages": 19000
+            },
+            {
+              "name": "Kyocera TK-5272Y Yellow Toner Kit",
+              "part_number": "1T02TV0US3",
+              "yield_pages": 19000
+            }
+          ],
+          "image": "/static/img/printers/kyocera-ecosys-p6235cdn.svg",
+          "image_alt": "Stylized illustration of the Kyocera ECOSYS P6235cdn laser printer"
+        }
+      ]
+    },
+    {
+      "name": "Toshiba",
+      "models": [
+        {
+          "model": "e-STUDIO 2515AC",
+          "category": "Color laser multifunction",
+          "release_year": 2016,
+          "cartridges": [
+            {
+              "name": "Toshiba T-FC415K Black Toner Cartridge",
+              "part_number": "6AJ00000152",
+              "yield_pages": 33800
+            },
+            {
+              "name": "Toshiba T-FC415C Cyan Toner Cartridge",
+              "part_number": "6AJ00000153",
+              "yield_pages": 28000
+            },
+            {
+              "name": "Toshiba T-FC415M Magenta Toner Cartridge",
+              "part_number": "6AJ00000154",
+              "yield_pages": 28000
+            },
+            {
+              "name": "Toshiba T-FC415Y Yellow Toner Cartridge",
+              "part_number": "6AJ00000155",
+              "yield_pages": 28000
+            }
+          ],
+          "image": "/static/img/printers/toshiba-e-studio-2515ac.svg",
+          "image_alt": "Stylized illustration of the Toshiba e-STUDIO 2515AC laser printer"
+        },
+        {
+          "model": "e-STUDIO 330AC",
+          "category": "Color laser multifunction",
+          "release_year": 2020,
+          "cartridges": [
+            {
+              "name": "Toshiba T-FC50U-K Black Toner Cartridge",
+              "part_number": "6AJ00000174",
+              "yield_pages": 17000
+            },
+            {
+              "name": "Toshiba T-FC50U-C Cyan Toner Cartridge",
+              "part_number": "6AJ00000175",
+              "yield_pages": 11500
+            },
+            {
+              "name": "Toshiba T-FC50U-M Magenta Toner Cartridge",
+              "part_number": "6AJ00000176",
+              "yield_pages": 11500
+            },
+            {
+              "name": "Toshiba T-FC50U-Y Yellow Toner Cartridge",
+              "part_number": "6AJ00000177",
+              "yield_pages": 11500
+            }
+          ],
+          "image": "/static/img/printers/toshiba-e-studio-330ac.svg",
+          "image_alt": "Stylized illustration of the Toshiba e-STUDIO 330AC laser printer"
+        },
+        {
+          "model": "e-STUDIO 409p",
+          "category": "Monochrome laser printer",
+          "release_year": 2019,
+          "cartridges": [
+            {
+              "name": "Toshiba T-FC415U Black Toner Cartridge",
+              "part_number": "6AJ00000158",
+              "yield_pages": 20000
+            }
+          ],
+          "image": "/static/img/printers/toshiba-e-studio-409p.svg",
+          "image_alt": "Stylized illustration of the Toshiba e-STUDIO 409p laser printer"
+        },
+        {
+          "model": "e-STUDIO 409s",
+          "category": "Monochrome laser multifunction",
+          "release_year": 2019,
+          "cartridges": [
+            {
+              "name": "Toshiba T-FC415U Black Toner Cartridge",
+              "part_number": "6AJ00000158",
+              "yield_pages": 20000
+            }
+          ],
+          "image": "/static/img/printers/toshiba-e-studio-409s.svg",
+          "image_alt": "Stylized illustration of the Toshiba e-STUDIO 409s laser printer"
+        }
+      ]
+    },
+    {
+      "name": "Kioxia",
+      "note": "Kioxia Corporation specializes in flash memory and solid-state storage solutions and has not released laser printers as of 2024.",
+      "models": []
+    }
+  ]
+}
