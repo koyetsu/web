@@ -101,7 +101,15 @@ def save_admin_password(value: str) -> None:
 
 def load_default_content() -> dict:
     with (DEFAULT_WEBROOT / "content.json").open("r", encoding="utf-8") as fh:
-        return json.load(fh)
+        data = json.load(fh)
+    return ensure_content_defaults(data)
+
+
+def ensure_content_defaults(content: dict) -> dict:
+    site = content.setdefault("site", {})
+    flags = site.setdefault("flags", {})
+    flags.setdefault("show_admin_border", False)
+    return content
 
 
 def load_content() -> dict:
@@ -114,7 +122,7 @@ def load_content() -> dict:
             session.add(Setting(key="content", value=json.dumps(default_content)))
             session.commit()
             return default_content
-        return json.loads(record.value)
+        return ensure_content_defaults(json.loads(record.value))
 
 
 def save_content(data: dict) -> None:
@@ -149,6 +157,14 @@ def page_title(content: dict, page_key: str) -> str:
     return meta.get("title") or content["site"].get("tagline") or content["site"]["name"]
 
 
+def compose_body_class(content: dict, *extra_classes: str) -> str:
+    ensure_content_defaults(content)
+    classes = [cls for cls in extra_classes if cls]
+    if content["site"]["flags"].get("show_admin_border"):
+        classes.append("admin-border")
+    return " ".join(classes).strip()
+
+
 @app.route("/")
 def home():
     content = load_content()
@@ -160,6 +176,7 @@ def home():
         theme=content["site"]["colors"],
         home=content["pages"]["home"],
         page_title=page_title(content, "home"),
+        body_class=compose_body_class(content),
     )
 
 
@@ -178,6 +195,7 @@ def services_page():
         theme=content["site"]["colors"],
         services=content["pages"]["services"],
         page_title=page_title(content, "services"),
+        body_class=compose_body_class(content),
     )
 
 
@@ -190,6 +208,7 @@ def contact_page():
         theme=content["site"]["colors"],
         contact=content["pages"]["contact"],
         page_title=page_title(content, "contact"),
+        body_class=compose_body_class(content),
     )
 
 
@@ -219,6 +238,7 @@ def admin_login():
         theme=content["site"]["colors"],
         page_title="Admin",
         error=error,
+        body_class=compose_body_class(content),
     )
 
 
@@ -277,10 +297,12 @@ def admin_dashboard():
         uploads=uploads,
         webroot_path=str(WEBROOT_PATH),
         admin_password_state=password_state,
+        body_class=compose_body_class(content),
     )
 
 
 def update_content_from_form(content: dict, form: "MultiDict") -> tuple[dict, bool]:
+    ensure_content_defaults(content)
     password_changed = False
     new_password = form.get("admin_password", "").strip()
     if new_password:
@@ -289,6 +311,9 @@ def update_content_from_form(content: dict, form: "MultiDict") -> tuple[dict, bo
     content["site"]["name"] = form.get("site_name", content["site"]["name"]).strip()
     content["site"]["tagline"] = form.get("site_tagline", "").strip()
     content["site"]["footer"]["description"] = form.get("footer_description", "").strip()
+    content["site"]["flags"]["show_admin_border"] = bool(
+        form.get("site_show_admin_border")
+    )
     colors = content["site"].setdefault("colors", {})
     colors["primary"] = form.get("color_primary", colors.get("primary", "#1d4ed8"))
     colors["primary_dark"] = form.get(
@@ -397,7 +422,7 @@ def render_mobile_home(content: dict):
         theme=content["site"]["colors"],
         home=content["pages"]["home"],
         page_title=page_title(content, "home"),
-        body_class="mobile-alt",
+        body_class=compose_body_class(content, "mobile-alt"),
         using_mobile_alt=True,
     )
 

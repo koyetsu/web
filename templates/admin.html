@@ -188,6 +188,28 @@
       font-weight: 600;
     }
 
+    .form-fields label.toggle-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-weight: 600;
+    }
+
+    .form-fields label.toggle-option input[type='checkbox'] {
+      width: 1.2rem;
+      height: 1.2rem;
+      margin-top: 0.2rem;
+    }
+
+    .form-fields label.toggle-option .toggle-label {
+      display: grid;
+      gap: 0.25rem;
+    }
+
+    .form-fields label.toggle-option .toggle-title {
+      font-weight: 600;
+    }
+
     .form-fields input,
     .form-fields textarea,
     .form-fields select {
@@ -437,6 +459,16 @@
               <dt>Tagline</dt>
               <dd>{{ content.site.tagline or '–' }}</dd>
             </dl>
+            <dl>
+              <dt>Admin border</dt>
+              <dd>
+                {% if content.site.flags.show_admin_border %}
+                  Enabled
+                {% else %}
+                  Disabled
+                {% endif %}
+              </dd>
+            </dl>
             <div class="color-swatches">
               <div class="color-swatch">
                 <span class="swatch-label">Primary</span>
@@ -465,6 +497,19 @@
             <label>
               Tagline
               <input type="text" name="site_tagline" value="{{ content.site.tagline }}" />
+            </label>
+          </div>
+          <div class="form-fields">
+            <label class="toggle-option">
+              <input
+                type="checkbox"
+                name="site_show_admin_border"
+                {% if content.site.flags.show_admin_border %}checked{% endif %}
+              />
+              <span class="toggle-label">
+                <span class="toggle-title">Show red admin border on site pages</span>
+                <span class="field-help">Adds a red border around public pages to confirm when the highlight mode is active.</span>
+              </span>
             </label>
           </div>
           <div class="form-fields">
