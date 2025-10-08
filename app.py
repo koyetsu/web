@@ -1,7 +1,6 @@
 import argparse
 import json
 import os
-import shutil
 from functools import wraps
 from pathlib import Path
 
@@ -15,42 +14,89 @@ from flask import (
     url_for,
 )
 from werkzeug.utils import secure_filename
+from sqlalchemy import Column, String, Text, create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 BASE_DIR = Path(__file__).parent.resolve()
 DEFAULT_WEBROOT = BASE_DIR / "webroot"
 WEBROOT_PATH = Path(os.environ.get("WEBROOT_PATH", DEFAULT_WEBROOT))
-CONTENT_FILE = WEBROOT_PATH / "content.json"
 UPLOAD_FOLDER = WEBROOT_PATH / "uploads"
 
-ADMIN_PASSWORD_FILE = WEBROOT_PATH / "admin_password.txt"
 DEFAULT_ADMIN_PASSWORD = "printstudio"
 SECRET_KEY = os.environ.get("SECRET_KEY", "change-me-please")
+DATABASE_FILE = WEBROOT_PATH / "site.db"
 
 app = Flask(__name__)
 app.config.update(SECRET_KEY=SECRET_KEY)
 
+Base = declarative_base()
+engine = None
+SessionLocal = None
 
-def ensure_webroot() -> None:
+
+class Setting(Base):
+    __tablename__ = "settings"
+
+    key = Column(String(100), primary_key=True)
+    value = Column(Text, nullable=False)
+
+
+def ensure_directories() -> None:
     WEBROOT_PATH.mkdir(parents=True, exist_ok=True)
     UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
-    if not ADMIN_PASSWORD_FILE.exists():
-        ADMIN_PASSWORD_FILE.write_text(DEFAULT_ADMIN_PASSWORD, encoding="utf-8")
-    if not CONTENT_FILE.exists():
-        if WEBROOT_PATH != DEFAULT_WEBROOT and (DEFAULT_WEBROOT / "content.json").exists():
-            shutil.copy(DEFAULT_WEBROOT / "content.json", CONTENT_FILE)
-        else:
+
+
+def init_db() -> None:
+    ensure_directories()
+    global engine, SessionLocal
+    if engine is None or SessionLocal is None:
+        database_uri = f"sqlite:///{DATABASE_FILE}"
+        engine = create_engine(
+            database_uri, future=True, connect_args={"check_same_thread": False}
+        )
+        SessionLocal = sessionmaker(bind=engine, expire_on_commit=False, future=True)
+        Base.metadata.create_all(engine)
+
+    assert SessionLocal is not None
+    with SessionLocal() as session:
+        created_defaults = False
+        if session.get(Setting, "admin_password") is None:
+            session.add(Setting(key="admin_password", value=json.dumps(DEFAULT_ADMIN_PASSWORD)))
+            created_defaults = True
+        if session.get(Setting, "content") is None:
             default_content = load_default_content()
-            save_content(default_content)
+            session.add(Setting(key="content", value=json.dumps(default_content)))
+            created_defaults = True
+        if created_defaults:
+            session.commit()
+
+
+def ensure_webroot() -> None:
+    init_db()
 
 
 def load_admin_password() -> str:
     ensure_webroot()
-    return ADMIN_PASSWORD_FILE.read_text(encoding="utf-8").strip()
+    assert SessionLocal is not None
+    with SessionLocal() as session:
+        record = session.get(Setting, "admin_password")
+        if record is None:
+            save_admin_password(DEFAULT_ADMIN_PASSWORD)
+            return DEFAULT_ADMIN_PASSWORD
+        return json.loads(record.value)
 
 
 def save_admin_password(value: str) -> None:
     ensure_webroot()
-    ADMIN_PASSWORD_FILE.write_text(value, encoding="utf-8")
+    stored_value = json.dumps(value)
+    assert SessionLocal is not None
+    with SessionLocal() as session:
+        record = session.get(Setting, "admin_password")
+        if record is None:
+            session.add(Setting(key="admin_password", value=stored_value))
+        else:
+            record.value = stored_value
+        session.commit()
 
 
 def load_default_content() -> dict:
@@ -60,14 +106,28 @@ def load_default_content() -> dict:
 
 def load_content() -> dict:
     ensure_webroot()
-    with CONTENT_FILE.open("r", encoding="utf-8") as fh:
-        return json.load(fh)
+    assert SessionLocal is not None
+    with SessionLocal() as session:
+        record = session.get(Setting, "content")
+        if record is None:
+            default_content = load_default_content()
+            session.add(Setting(key="content", value=json.dumps(default_content)))
+            session.commit()
+            return default_content
+        return json.loads(record.value)
 
 
 def save_content(data: dict) -> None:
     ensure_webroot()
-    with CONTENT_FILE.open("w", encoding="utf-8") as fh:
-        json.dump(data, fh, indent=2, ensure_ascii=False)
+    assert SessionLocal is not None
+    stored_value = json.dumps(data, ensure_ascii=False, indent=2)
+    with SessionLocal() as session:
+        record = session.get(Setting, "content")
+        if record is None:
+            session.add(Setting(key="content", value=stored_value))
+        else:
+            record.value = stored_value
+        session.commit()
 
 
 def login_required(view):
