@@ -23,8 +23,15 @@
               "yield_pages": 10000
             }
           ],
-          "image": "https://www.hp.com/is/image/hp/hp-laserjet-pro-m404n-printer?wid=1200&hei=1200&fmt=png-alpha",
-          "image_alt": "Product photo of the HP LaserJet Pro M404n laser printer"
+          "image": "https://store.hp.com/app/assets/images/uploads/prod/hp-laserjet-pro-m404n-printer_w1a52aaba_1.png",
+          "image_alt": "Product photo of the HP LaserJet Pro M404n laser printer",
+          "image_gallery": [
+            "https://store.hp.com/app/assets/images/uploads/prod/hp-laserjet-pro-m404n-printer_w1a52aaba_1.png",
+            "https://store.hp.com/app/assets/images/uploads/prod/hp-laserjet-pro-m404n-printer_w1a52aaba_2.png",
+            "https://www.datamaxtexas.com/hubfs/blog-files/hp-laserjet-pro-m404n.png",
+            "https://www.hp.com/is/image/hp/hp-laserjet-pro-m404n-printer?wid=1200&hei=1200&fmt=png-alpha"
+          ],
+          "fallback_image": "/static/img/printers/hp-laserjet-pro-m404n.svg"
         },
         {
           "model": "LaserJet Pro M203dw",
@@ -42,8 +49,15 @@
               "yield_pages": 3500
             }
           ],
-          "image": "https://www.hp.com/is/image/hp/hp-laserjet-pro-m203dw-printer?wid=1200&hei=1200&fmt=png-alpha",
-          "image_alt": "Product photo of the HP LaserJet Pro M203dw laser printer"
+          "image": "https://store.hp.com/app/assets/images/uploads/prod/hp-laserjet-pro-m203dw-printer_g3q47a_1.png",
+          "image_alt": "Product photo of the HP LaserJet Pro M203dw laser printer",
+          "image_gallery": [
+            "https://store.hp.com/app/assets/images/uploads/prod/hp-laserjet-pro-m203dw-printer_g3q47a_1.png",
+            "https://store.hp.com/app/assets/images/uploads/prod/hp-laserjet-pro-m203dw-printer_g3q47a_2.png",
+            "https://www.datamaxtexas.com/hubfs/hp-laserjet-pro-m203dw.png",
+            "https://www.hp.com/is/image/hp/hp-laserjet-pro-m203dw-printer?wid=1200&hei=1200&fmt=png-alpha"
+          ],
+          "fallback_image": "/static/img/printers/hp-laserjet-pro-m203dw.svg"
         },
         {
           "model": "LaserJet Enterprise M507dn",
@@ -66,8 +80,14 @@
               "yield_pages": 20000
             }
           ],
-          "image": "https://www.hp.com/is/image/hp/hp-laserjet-enterprise-m507dn-printer?wid=1200&hei=1200&fmt=png-alpha",
-          "image_alt": "Product photo of the HP LaserJet Enterprise M507dn laser printer"
+          "image": "https://store.hp.com/app/assets/images/uploads/prod/hp-laserjet-enterprise-m507dn-printer_1pv87a_1.png",
+          "image_alt": "Product photo of the HP LaserJet Enterprise M507dn laser printer",
+          "image_gallery": [
+            "https://store.hp.com/app/assets/images/uploads/prod/hp-laserjet-enterprise-m507dn-printer_1pv87a_1.png",
+            "https://store.hp.com/app/assets/images/uploads/prod/hp-laserjet-enterprise-m507dn-printer_1pv87a_2.png",
+            "https://www.hp.com/is/image/hp/hp-laserjet-enterprise-m507dn-printer?wid=1200&hei=1200&fmt=png-alpha"
+          ],
+          "fallback_image": "/static/img/printers/hp-laserjet-enterprise-m507dn.svg"
         },
         {
           "model": "Color LaserJet Pro M454dw",
@@ -115,8 +135,14 @@
               "yield_pages": 6000
             }
           ],
-          "image": "https://www.hp.com/is/image/hp/hp-color-laserjet-pro-m454dw-printer?wid=1200&hei=1200&fmt=png-alpha",
-          "image_alt": "Product photo of the HP Color LaserJet Pro M454dw laser printer"
+          "image": "https://store.hp.com/app/assets/images/uploads/prod/hp-color-laserjet-pro-m454dw-printer_w1y45a_1.png",
+          "image_alt": "Product photo of the HP Color LaserJet Pro M454dw laser printer",
+          "image_gallery": [
+            "https://store.hp.com/app/assets/images/uploads/prod/hp-color-laserjet-pro-m454dw-printer_w1y45a_1.png",
+            "https://store.hp.com/app/assets/images/uploads/prod/hp-color-laserjet-pro-m454dw-printer_w1y45a_2.png",
+            "https://www.hp.com/is/image/hp/hp-color-laserjet-pro-m454dw-printer?wid=1200&hei=1200&fmt=png-alpha"
+          ],
+          "fallback_image": "/static/img/printers/hp-color-laserjet-pro-m454dw.svg"
         }
       ]
     },
@@ -134,8 +160,14 @@
               "yield_pages": 2100
             }
           ],
-          "image": "https://www.usa.canon.com/content/dam/usa/en/products/printers/imageclass/lbp6230dw/gallery/lbp6230dw-gallery-01.png",
-          "image_alt": "Product photo of the Canon imageCLASS LBP6230dw laser printer"
+          "image": "https://www.canon.com.au/-/media/images/business/cbs-products/laser/imageclass-lbp6230dw/canon-imageclass-lbp6230dw-front-1400x960.ashx",
+          "image_alt": "Product photo of the Canon imageCLASS LBP6230dw laser printer",
+          "image_gallery": [
+            "https://www.canon.com.au/-/media/images/business/cbs-products/laser/imageclass-lbp6230dw/canon-imageclass-lbp6230dw-front-1400x960.ashx",
+            "https://asia.canon/media/image/2020/08/06/ee8e4875e5d94c8c8ffed0fdd3e768d4_LBP6230dw_frt_03.png",
+            "https://www.usa.canon.com/content/dam/usa/en/products/printers/imageclass/lbp6230dw/gallery/lbp6230dw-gallery-01.png"
+          ],
+          "fallback_image": "/static/img/printers/canon-imageclass-lbp6230dw.svg"
         },
         {
           "model": "imageCLASS MF445dw",
@@ -153,8 +185,14 @@
               "yield_pages": 10000
             }
           ],
-          "image": "https://www.usa.canon.com/content/dam/usa/en/products/printers/imageclass/mf445dw/gallery/mf445dw-gallery-01.png",
-          "image_alt": "Product photo of the Canon imageCLASS MF445dw laser printer"
+          "image": "https://www.canon.com.au/-/media/images/business/cbs-products/laser/imageclass-mf445dw/canon-imageclass-mf445dw-front-1400x960.ashx",
+          "image_alt": "Product photo of the Canon imageCLASS MF445dw laser printer",
+          "image_gallery": [
+            "https://www.canon.com.au/-/media/images/business/cbs-products/laser/imageclass-mf445dw/canon-imageclass-mf445dw-front-1400x960.ashx",
+            "https://asia.canon/media/image/2020/08/06/7d4b2666a3d04af58cb44f01401c26cd_MF445dw_frt_03.png",
+            "https://www.usa.canon.com/content/dam/usa/en/products/printers/imageclass/mf445dw/gallery/mf445dw-gallery-01.png"
+          ],
+          "fallback_image": "/static/img/printers/canon-imageclass-mf445dw.svg"
         },
         {
           "model": "imageCLASS LBP226dw",
@@ -172,8 +210,14 @@
               "yield_pages": 9200
             }
           ],
-          "image": "https://www.usa.canon.com/content/dam/usa/en/products/printers/imageclass/lbp226dw/gallery/lbp226dw-gallery-01.png",
-          "image_alt": "Product photo of the Canon imageCLASS LBP226dw laser printer"
+          "image": "https://www.canon.com.au/-/media/images/business/cbs-products/laser/imageclass-lbp226dw/canon-imageclass-lbp226dw-front-1400x960.ashx",
+          "image_alt": "Product photo of the Canon imageCLASS LBP226dw laser printer",
+          "image_gallery": [
+            "https://www.canon.com.au/-/media/images/business/cbs-products/laser/imageclass-lbp226dw/canon-imageclass-lbp226dw-front-1400x960.ashx",
+            "https://asia.canon/media/image/2020/08/10/47e399a097d64f1ab905677ed2b6c1b4_LBP226dw_frt_02.png",
+            "https://www.usa.canon.com/content/dam/usa/en/products/printers/imageclass/lbp226dw/gallery/lbp226dw-gallery-01.png"
+          ],
+          "fallback_image": "/static/img/printers/canon-imageclass-lbp226dw.svg"
         },
         {
           "model": "imageCLASS MF269dw II",
@@ -192,7 +236,13 @@
             }
           ],
           "image": "https://www.canon.com.au/-/media/images/business/cbs-products/laser/imageclass-mf269dw/profile-banner-imageclass-mf269dw-front-1400x960.ashx",
-          "image_alt": "Product photo of the Canon imageCLASS MF269dw II laser printer"
+          "image_alt": "Product photo of the Canon imageCLASS MF269dw II laser printer",
+          "image_gallery": [
+            "https://www.canon.com.au/-/media/images/business/cbs-products/laser/imageclass-mf269dw/profile-banner-imageclass-mf269dw-front-1400x960.ashx",
+            "https://asia.canon/media/image/2021/05/21/4a5f02d364bf4ca8924f934edca31843_MF269dwII_frt.png",
+            "https://rmsupport.canon.com/content/dam/usa/products/printers/imageclass/mf269dw-ii/gallery/mf269dwii-gallery-01.png"
+          ],
+          "fallback_image": "/static/img/printers/canon-imageclass-mf269dw-ii.svg"
         }
       ]
     },
@@ -211,7 +261,12 @@
             }
           ],
           "image": "https://www.kyoceradocumentsolutions.us/content/dam/kusa/en/products/printers/ecosys-p2040dw/images/ecosys-p2040dw.png",
-          "image_alt": "Product photo of the Kyocera ECOSYS P2040dw laser printer"
+          "image_alt": "Product photo of the Kyocera ECOSYS P2040dw laser printer",
+          "image_gallery": [
+            "https://www.kyoceradocumentsolutions.us/content/dam/kusa/en/products/printers/ecosys-p2040dw/images/ecosys-p2040dw.png",
+            "https://www.kyoceradocumentsolutions.eu/content/downloadcenter/eu/drivers/image/ECOSYS_P2040dw.png"
+          ],
+          "fallback_image": "/static/img/printers/kyocera-ecosys-p2040dw.svg"
         },
         {
           "model": "ECOSYS M5526cdw",
@@ -240,7 +295,12 @@
             }
           ],
           "image": "https://www.kyoceradocumentsolutions.us/content/dam/kusa/en/products/mfps/ecosys-m5526cdw/images/ecosys-m5526cdw.png",
-          "image_alt": "Product photo of the Kyocera ECOSYS M5526cdw color laser multifunction printer"
+          "image_alt": "Product photo of the Kyocera ECOSYS M5526cdw color laser multifunction printer",
+          "image_gallery": [
+            "https://www.kyoceradocumentsolutions.us/content/dam/kusa/en/products/mfps/ecosys-m5526cdw/images/ecosys-m5526cdw.png",
+            "https://www.kyoceradocumentsolutions.eu/content/downloadcenter/eu/drivers/image/ECOSYS_M5526cdw.png"
+          ],
+          "fallback_image": "/static/img/printers/kyocera-ecosys-m5526cdw.svg"
         },
         {
           "model": "ECOSYS P3155dn",
@@ -254,7 +314,12 @@
             }
           ],
           "image": "https://www.kyoceradocumentsolutions.us/content/dam/kusa/en/products/printers/ecosys-p3155dn/images/ecosys-p3155dn.png",
-          "image_alt": "Product photo of the Kyocera ECOSYS P3155dn laser printer"
+          "image_alt": "Product photo of the Kyocera ECOSYS P3155dn laser printer",
+          "image_gallery": [
+            "https://www.kyoceradocumentsolutions.us/content/dam/kusa/en/products/printers/ecosys-p3155dn/images/ecosys-p3155dn.png",
+            "https://www.kyoceradocumentsolutions.eu/content/downloadcenter/eu/drivers/image/ECOSYS_P3155dn.png"
+          ],
+          "fallback_image": "/static/img/printers/kyocera-ecosys-p3155dn.svg"
         },
         {
           "model": "ECOSYS P6235cdn",
@@ -283,7 +348,12 @@
             }
           ],
           "image": "https://www.kyoceradocumentsolutions.us/content/dam/kusa/en/products/printers/ecosys-p6235cdn/images/ecosys-p6235cdn.png",
-          "image_alt": "Product photo of the Kyocera ECOSYS P6235cdn color laser printer"
+          "image_alt": "Product photo of the Kyocera ECOSYS P6235cdn color laser printer",
+          "image_gallery": [
+            "https://www.kyoceradocumentsolutions.us/content/dam/kusa/en/products/printers/ecosys-p6235cdn/images/ecosys-p6235cdn.png",
+            "https://www.kyoceradocumentsolutions.eu/content/downloadcenter/eu/drivers/image/ECOSYS_P6235cdn.png"
+          ],
+          "fallback_image": "/static/img/printers/kyocera-ecosys-p6235cdn.svg"
         }
       ]
     },
@@ -317,7 +387,12 @@
             }
           ],
           "image": "https://business.toshiba.com/content/dam/tbs/products/mfp/e-studio2515ac/images/e-studio2515ac.png",
-          "image_alt": "Product photo of the Toshiba e-STUDIO 2515AC color multifunction printer"
+          "image_alt": "Product photo of the Toshiba e-STUDIO 2515AC color multifunction printer",
+          "image_gallery": [
+            "https://business.toshiba.com/content/dam/tbs/products/mfp/e-studio2515ac/images/e-studio2515ac.png",
+            "https://www.toshibatec.com/media/images/products/mfp/e-studio2515ac.jpg"
+          ],
+          "fallback_image": "/static/img/printers/toshiba-e-studio-2515ac.svg"
         },
         {
           "model": "e-STUDIO 330AC",
@@ -346,7 +421,12 @@
             }
           ],
           "image": "https://business.toshiba.com/content/dam/tbs/products/mfp/e-studio330ac/images/e-studio330ac.png",
-          "image_alt": "Product photo of the Toshiba e-STUDIO 330AC color multifunction printer"
+          "image_alt": "Product photo of the Toshiba e-STUDIO 330AC color multifunction printer",
+          "image_gallery": [
+            "https://business.toshiba.com/content/dam/tbs/products/mfp/e-studio330ac/images/e-studio330ac.png",
+            "https://www.toshibatec.com/media/images/products/mfp/e-studio330ac.jpg"
+          ],
+          "fallback_image": "/static/img/printers/toshiba-e-studio-330ac.svg"
         },
         {
           "model": "e-STUDIO 409p",
@@ -360,7 +440,12 @@
             }
           ],
           "image": "https://business.toshiba.com/content/dam/tbs/products/printers/e-studio409p/images/e-studio409p.png",
-          "image_alt": "Product photo of the Toshiba e-STUDIO 409p laser printer"
+          "image_alt": "Product photo of the Toshiba e-STUDIO 409p laser printer",
+          "image_gallery": [
+            "https://business.toshiba.com/content/dam/tbs/products/printers/e-studio409p/images/e-studio409p.png",
+            "https://www.toshibatec.com/media/images/products/printers/e-studio409p.jpg"
+          ],
+          "fallback_image": "/static/img/printers/toshiba-e-studio-409p.svg"
         },
         {
           "model": "e-STUDIO 409s",
@@ -374,7 +459,12 @@
             }
           ],
           "image": "https://business.toshiba.com/content/dam/tbs/products/mfp/e-studio409s/images/e-studio409s.png",
-          "image_alt": "Product photo of the Toshiba e-STUDIO 409s monochrome multifunction printer"
+          "image_alt": "Product photo of the Toshiba e-STUDIO 409s monochrome multifunction printer",
+          "image_gallery": [
+            "https://business.toshiba.com/content/dam/tbs/products/mfp/e-studio409s/images/e-studio409s.png",
+            "https://www.toshibatec.com/media/images/products/mfp/e-studio409s.jpg"
+          ],
+          "fallback_image": "/static/img/printers/toshiba-e-studio-409s.svg"
         }
       ]
     },

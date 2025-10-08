@@ -95,6 +95,8 @@ def _build_default_printer_image_map() -> dict[tuple[str | None, str | None], di
             mapping[(name, model.get("model"))] = {
                 "image": model.get("image", ""),
                 "image_alt": model.get("image_alt", ""),
+                "image_gallery": model.get("image_gallery") or [],
+                "fallback_image": model.get("fallback_image", ""),
             }
     return mapping
 
@@ -103,11 +105,103 @@ DEFAULT_STORE_PAGE_TEMPLATE, DEFAULT_STORE_NAV_ITEM = _load_default_store_assets
 DEFAULT_PRINTER_IMAGE_MAP = _build_default_printer_image_map()
 LEGACY_PRINTER_IMAGE_PATTERNS: dict[tuple[str | None, str | None], list[str]] = {
     (
+        "HP",
+        "LaserJet Pro M404n",
+    ): [
+        "hp.com/is/image/hp/hp-laserjet-pro-m404n-printer",
+        "static/img/printers/hp-laserjet-pro-m404n.svg",
+    ],
+    (
+        "HP",
+        "LaserJet Pro M203dw",
+    ): [
+        "hp.com/is/image/hp/hp-laserjet-pro-m203dw-printer",
+        "static/img/printers/hp-laserjet-pro-m203dw.svg",
+    ],
+    (
+        "HP",
+        "LaserJet Enterprise M507dn",
+    ): [
+        "hp.com/is/image/hp/hp-laserjet-enterprise-m507dn-printer",
+    ],
+    (
+        "HP",
+        "Color LaserJet Pro M454dw",
+    ): [
+        "hp.com/is/image/hp/hp-color-laserjet-pro-m454dw-printer",
+    ],
+    (
+        "Canon",
+        "imageCLASS LBP6230dw",
+    ): [
+        "usa.canon.com/content/dam/usa/en/products/printers/imageclass/lbp6230dw",
+    ],
+    (
+        "Canon",
+        "imageCLASS MF445dw",
+    ): [
+        "usa.canon.com/content/dam/usa/en/products/printers/imageclass/mf445dw",
+    ],
+    (
+        "Canon",
+        "imageCLASS LBP226dw",
+    ): [
+        "usa.canon.com/content/dam/usa/en/products/printers/imageclass/lbp226dw",
+    ],
+    (
         "Canon",
         "imageCLASS MF269dw II",
     ): [
         "usa.canon.com/content/dam/usa/en/products/printers/imageclass/mf269dw-ii",
         "rmsupport.canon.com",
+    ],
+    (
+        "Kyocera",
+        "ECOSYS P2040dw",
+    ): [
+        "kyoceradocumentsolutions.us/content/dam/kusa/en/products/printers/ecosys-p2040dw",
+    ],
+    (
+        "Kyocera",
+        "ECOSYS M5526cdw",
+    ): [
+        "kyoceradocumentsolutions.us/content/dam/kusa/en/products/mfps/ecosys-m5526cdw",
+    ],
+    (
+        "Kyocera",
+        "ECOSYS P3155dn",
+    ): [
+        "kyoceradocumentsolutions.us/content/dam/kusa/en/products/printers/ecosys-p3155dn",
+    ],
+    (
+        "Kyocera",
+        "ECOSYS P6235cdn",
+    ): [
+        "kyoceradocumentsolutions.us/content/dam/kusa/en/products/printers/ecosys-p6235cdn",
+    ],
+    (
+        "Toshiba",
+        "e-STUDIO 2515AC",
+    ): [
+        "business.toshiba.com/content/dam/tbs/products/mfp/e-studio2515ac",
+    ],
+    (
+        "Toshiba",
+        "e-STUDIO 330AC",
+    ): [
+        "business.toshiba.com/content/dam/tbs/products/mfp/e-studio330ac",
+    ],
+    (
+        "Toshiba",
+        "e-STUDIO 409p",
+    ): [
+        "business.toshiba.com/content/dam/tbs/products/printers/e-studio409p",
+    ],
+    (
+        "Toshiba",
+        "e-STUDIO 409s",
+    ): [
+        "business.toshiba.com/content/dam/tbs/products/mfp/e-studio409s",
     ],
 }
 
@@ -258,6 +352,8 @@ def ensure_printer_inventory_defaults(inventory: dict) -> tuple[dict, bool]:
             if defaults:
                 desired_image = defaults.get("image") or ""
                 desired_alt = defaults.get("image_alt") or ""
+                desired_gallery = defaults.get("image_gallery") or []
+                desired_fallback = defaults.get("fallback_image") or ""
                 current_image = model.get("image") or ""
                 if desired_image:
                     should_override = False
@@ -277,6 +373,24 @@ def ensure_printer_inventory_defaults(inventory: dict) -> tuple[dict, bool]:
                     if (not current_alt or current_alt.startswith("Stylized illustration")) and current_alt != desired_alt:
                         model["image_alt"] = desired_alt
                         changed = True
+                if desired_gallery:
+                    current_gallery = model.get("image_gallery")
+                    if not isinstance(current_gallery, list) or not current_gallery:
+                        model["image_gallery"] = [url for url in desired_gallery if url]
+                        changed = True
+                if desired_fallback:
+                    current_fallback = model.get("fallback_image") or ""
+                    if (not current_fallback or current_fallback.startswith("/static/img/printers/")) and current_fallback != desired_fallback:
+                        model["fallback_image"] = desired_fallback
+                        changed = True
+            if not isinstance(model.get("image_gallery"), list):
+                model["image_gallery"] = []
+                changed = True
+            else:
+                cleaned_gallery = [url for url in model["image_gallery"] if url]
+                if cleaned_gallery != model["image_gallery"]:
+                    model["image_gallery"] = cleaned_gallery
+                    changed = True
             if not model.get("image"):
                 slug_base = f"{manufacturer.get('name', '')} {model.get('model', '')}".strip().lower()
                 slug = re.sub(r"[^a-z0-9]+", "-", slug_base).strip("-") or "printer"
@@ -285,6 +399,11 @@ def ensure_printer_inventory_defaults(inventory: dict) -> tuple[dict, bool]:
                 if candidate.exists():
                     model["image"] = f"/{static_path.as_posix()}"
                     changed = True
+            primary_image = model.get("image") or ""
+            gallery = model.get("image_gallery") or []
+            if primary_image and (not gallery or primary_image not in gallery):
+                model["image_gallery"] = [primary_image, *[url for url in gallery if url != primary_image]]
+                changed = True
             if not model.get("image_alt") and model.get("model"):
                 manufacturer_name = manufacturer.get("name", "").strip()
                 model_name = model.get("model", "").strip()
@@ -292,6 +411,18 @@ def ensure_printer_inventory_defaults(inventory: dict) -> tuple[dict, bool]:
                     model["image_alt"] = (
                         f"Stylized illustration of the {manufacturer_name} {model_name} laser printer"
                     ).strip()
+                    changed = True
+            if desired_fallback := defaults.get("fallback_image") if defaults else "":
+                if not model.get("fallback_image"):
+                    model["fallback_image"] = desired_fallback
+                    changed = True
+            elif not model.get("fallback_image") and primary_image:
+                slug_base = f"{manufacturer.get('name', '')} {model.get('model', '')}".strip().lower()
+                slug = re.sub(r"[^a-z0-9]+", "-", slug_base).strip("-") or "printer"
+                static_path = Path("static/img/printers") / f"{slug}.svg"
+                candidate = BASE_DIR / static_path
+                if candidate.exists():
+                    model["fallback_image"] = f"/{static_path.as_posix()}"
                     changed = True
     return inventory, changed
 

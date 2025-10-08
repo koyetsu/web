@@ -530,6 +530,23 @@ nav a:hover {
   object-fit: contain;
 }
 
+.product-card__media--broken {
+  background: color-mix(in srgb, var(--muted) 80%, var(--white) 20%);
+  color: var(--primary-dark);
+  text-align: center;
+}
+
+.product-card__media--broken img {
+  display: none;
+}
+
+.product-card__media__fallback-label {
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
 .product-card__body {
   display: grid;
   gap: 1.1rem;
