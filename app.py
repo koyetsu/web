@@ -244,9 +244,18 @@ def ensure_printer_inventory_defaults(inventory: dict) -> tuple[dict, bool]:
                 changed = True
             defaults = DEFAULT_PRINTER_IMAGE_MAP.get((manufacturer.get("name"), model.get("model")))
             if defaults:
-                for field, value in defaults.items():
-                    if value and not model.get(field):
-                        model[field] = value
+                desired_image = defaults.get("image") or ""
+                desired_alt = defaults.get("image_alt") or ""
+                current_image = model.get("image") or ""
+                if desired_image:
+                    if not current_image or current_image.startswith("/static/img/printers/") or current_image == desired_image:
+                        if current_image != desired_image:
+                            model["image"] = desired_image
+                            changed = True
+                if desired_alt:
+                    current_alt = model.get("image_alt") or ""
+                    if (not current_alt or current_alt.startswith("Stylized illustration")) and current_alt != desired_alt:
+                        model["image_alt"] = desired_alt
                         changed = True
             if not model.get("image"):
                 slug_base = f"{manufacturer.get('name', '')} {model.get('model', '')}".strip().lower()
