@@ -1,58 +1,227 @@
 {% extends 'base.html' %}
 {% block content %}
-  <section class="hero">
+  {% if admin_mode %}
+    <div class="page-editor is-open" data-page-editor="home">
+      <div class="page-editor__header">
+        <h2 class="page-editor__title">Home page editor</h2>
+        <button type="button" class="page-editor__toggle" data-editor-toggle>Hide editor</button>
+      </div>
+      <form class="page-editor__body" data-editor-form>
+        <input type="hidden" name="page" value="home" />
+        <p class="editor-hint">Updates apply to the live page preview only while admin mode is active.</p>
+        <div class="form-fields">
+          <label>Hero badge <input type="text" name="home_hero_badge" value="{{ home.hero.badge }}" /></label>
+          <label>Hero title <input type="text" name="home_hero_title" value="{{ home.hero.title }}" /></label>
+          <label>
+            Hero description
+            <textarea name="home_hero_description">{{ home.hero.description }}</textarea>
+          </label>
+          <label>Hero CTA text <input type="text" name="home_hero_cta_text" value="{{ home.hero.cta_text }}" /></label>
+          <label>Hero CTA link <input type="text" name="home_hero_cta_link" value="{{ home.hero.cta_link }}" /></label>
+          <label>
+            Hero image path
+            <input type="text" name="home_hero_image" value="{{ home.hero.image }}" list="media-options" />
+          </label>
+          <label>Hero image alt text <input type="text" name="home_hero_image_alt" value="{{ home.hero.image_alt }}" /></label>
+        </div>
+
+        <h3>{{ home.what_we_print.title }}</h3>
+        <div class="form-fields">
+          <label>Section title
+            <input type="text" name="home_what_we_print_heading" value="{{ home.what_we_print.title }}" />
+          </label>
+        </div>
+        <div class="collection-wrapper">
+          <div class="collection" data-collection="home_what_we_print">
+            {% for item in home.what_we_print['items'] %}
+              <div class="collection-item">
+                <div class="collection-item-header">
+                  <strong>Card {{ loop.index }}</strong>
+                  <button type="button" class="remove-item">Remove</button>
+                </div>
+                <label>Title <input type="text" name="home_what_we_print_title" value="{{ item.title }}" /></label>
+                <label>Description <textarea name="home_what_we_print_description">{{ item.description }}</textarea></label>
+                <label>
+                  Card image
+                  <input type="text" name="home_what_we_print_image" value="{{ item.image }}" list="media-options" />
+                </label>
+                <label>
+                  Image alt text
+                  <input type="text" name="home_what_we_print_image_alt" value="{{ item.image_alt }}" />
+                </label>
+                <label>Bullet list (one per line)
+                  <textarea name="home_what_we_print_bullets">{{ item.bullets | join('\n') }}</textarea>
+                </label>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-item" data-template="home_what_we_print_template">Add card</button>
+        </div>
+        <template id="home_what_we_print_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New card</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="home_what_we_print_title" /></label>
+            <label>Description <textarea name="home_what_we_print_description"></textarea></label>
+            <label>
+              Card image
+              <input type="text" name="home_what_we_print_image" list="media-options" />
+            </label>
+            <label>
+              Image alt text
+              <input type="text" name="home_what_we_print_image_alt" />
+            </label>
+            <label>Bullet list (one per line)
+              <textarea name="home_what_we_print_bullets"></textarea>
+            </label>
+          </div>
+        </template>
+
+        <h3>{{ home.why_choose.title }}</h3>
+        <div class="form-fields">
+          <label>Section title
+            <input type="text" name="home_why_choose_heading" value="{{ home.why_choose.title }}" />
+          </label>
+        </div>
+        <div class="collection-wrapper">
+          <div class="collection" data-collection="home_why_choose">
+            {% for item in home.why_choose['items'] %}
+              <div class="collection-item">
+                <div class="collection-item-header">
+                  <strong>Highlight {{ loop.index }}</strong>
+                  <button type="button" class="remove-item">Remove</button>
+                </div>
+                <label>Title <input type="text" name="home_why_choose_title" value="{{ item.title }}" /></label>
+                <label>Description <textarea name="home_why_choose_description">{{ item.description }}</textarea></label>
+                <label>
+                  Icon/image
+                  <input type="text" name="home_why_choose_image" value="{{ item.image | default('', true) }}" list="media-options" />
+                </label>
+                <label>
+                  Image alt text
+                  <input type="text" name="home_why_choose_image_alt" value="{{ item.image_alt | default('', true) }}" />
+                </label>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-item" data-template="home_why_choose_template">Add highlight</button>
+        </div>
+        <template id="home_why_choose_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New highlight</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="home_why_choose_title" /></label>
+            <label>Description <textarea name="home_why_choose_description"></textarea></label>
+            <label>
+              Icon/image
+              <input type="text" name="home_why_choose_image" list="media-options" />
+            </label>
+            <label>
+              Image alt text
+              <input type="text" name="home_why_choose_image_alt" />
+            </label>
+          </div>
+        </template>
+
+        <h3>{{ home.testimonials.title }}</h3>
+        <div class="form-fields">
+          <label>Section title
+            <input type="text" name="home_testimonials_heading" value="{{ home.testimonials.title }}" />
+          </label>
+        </div>
+        <div class="collection-wrapper">
+          <div class="collection" data-collection="home_testimonials">
+            {% for item in home.testimonials['items'] %}
+              <div class="collection-item">
+                <div class="collection-item-header">
+                  <strong>Testimonial {{ loop.index }}</strong>
+                  <button type="button" class="remove-item">Remove</button>
+                </div>
+                <label>Quote <textarea name="home_testimonials_quote">{{ item.quote }}</textarea></label>
+                <label>Attribution <input type="text" name="home_testimonials_author" value="{{ item.author }}" /></label>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-item" data-template="home_testimonials_template">Add testimonial</button>
+        </div>
+        <template id="home_testimonials_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New testimonial</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Quote <textarea name="home_testimonials_quote"></textarea></label>
+            <label>Attribution <input type="text" name="home_testimonials_author" /></label>
+          </div>
+        </template>
+
+        <datalist id="media-options">
+          <option value=""></option>
+          {% for upload in editor_uploads %}
+            <option value="/uploads/{{ upload }}">/uploads/{{ upload }}</option>
+          {% endfor %}
+        </datalist>
+      </form>
+    </div>
+  {% endif %}
+
+  <section class="hero" data-preview-section="home-hero">
     <div class="hero-content">
       <div>
-        <span class="badge">{{ home.hero.badge }}</span>
-        <h1>{{ home.hero.title }}</h1>
-        <p>{{ home.hero.description }}</p>
-        <a class="primary-button" href="{{ home.hero.cta_link }}">{{ home.hero.cta_text }}</a>
+        <span class="badge" data-slot="home.hero.badge">{{ home.hero.badge }}</span>
+        <h1 data-slot="home.hero.title">{{ home.hero.title }}</h1>
+        <p data-slot="home.hero.description">{{ home.hero.description }}</p>
+        <a class="primary-button" href="{{ home.hero.cta_link }}" data-slot-link="home.hero.cta">
+          {{ home.hero.cta_text }}
+        </a>
       </div>
-      {% if home.hero.image %}
-        <div class="hero-image">
+      <div class="hero-image" data-slot-container="home.hero.image" {% if not home.hero.image %}hidden{% endif %}>
+        {% if home.hero.image %}
           <img src="{{ home.hero.image }}" alt="{{ home.hero.image_alt }}" />
-        </div>
-      {% endif %}
+        {% endif %}
+      </div>
     </div>
   </section>
 
-  <section class="section alt">
+  <section class="section alt" data-preview-section="home-what-we-print">
     <div class="grid">
-      <h2>{{ home.what_we_print.title }}</h2>
-      <div class="grid grid-3">
+      <h2 data-slot="home.what_we_print.title">{{ home.what_we_print.title }}</h2>
+      <div class="grid grid-3" data-repeat="home.what_we_print.items">
         {% for item in home.what_we_print["items"] %}
           <article class="card">
-            {% if item.image %}
-              <div class="card-media">
+            <div class="card-media" data-image-container {% if not item.image %}hidden{% endif %}>
+              {% if item.image %}
                 <img src="{{ item.image }}" alt="{{ item.image_alt }}" loading="lazy" />
-              </div>
-            {% endif %}
+              {% endif %}
+            </div>
             <h3>{{ item.title }}</h3>
             <p>{{ item.description }}</p>
-            {% if item.bullets %}
-              <ul class="checklist">
-                {% for bullet in item.bullets %}
-                  <li>{{ bullet }}</li>
-                {% endfor %}
-              </ul>
-            {% endif %}
+            <ul class="checklist" data-list {% if not item.bullets %}hidden{% endif %}>
+              {% for bullet in item.bullets %}
+                <li>{{ bullet }}</li>
+              {% endfor %}
+            </ul>
           </article>
         {% endfor %}
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" data-preview-section="home-why-choose">
     <div class="grid">
-      <h2>{{ home.why_choose.title }}</h2>
-      <div class="grid grid-3">
+      <h2 data-slot="home.why_choose.title">{{ home.why_choose.title }}</h2>
+      <div class="grid grid-3" data-repeat="home.why_choose.items">
         {% for item in home.why_choose["items"] %}
           <article class="card">
-            {% if item.image %}
-              <div class="card-media compact">
+            <div class="card-media compact" data-image-container {% if not item.image %}hidden{% endif %}>
+              {% if item.image %}
                 <img src="{{ item.image }}" alt="{{ item.image_alt }}" loading="lazy" />
-              </div>
-            {% endif %}
+              {% endif %}
+            </div>
             <h3>{{ item.title }}</h3>
             <p>{{ item.description }}</p>
           </article>
@@ -61,10 +230,10 @@
     </div>
   </section>
 
-  <section class="section alt">
+  <section class="section alt" data-preview-section="home-testimonials">
     <div class="grid">
-      <h2>{{ home.testimonials.title }}</h2>
-      <div class="grid grid-3">
+      <h2 data-slot="home.testimonials.title">{{ home.testimonials.title }}</h2>
+      <div class="grid grid-3" data-repeat="home.testimonials.items">
         {% for testimonial in home.testimonials["items"] %}
           <article class="card testimonial">
             <p>{{ testimonial.quote }}</p>
@@ -74,4 +243,28 @@
       </div>
     </div>
   </section>
+
+  {% if admin_mode %}
+    <template id="tpl-home-what-we-print">
+      <article class="card">
+        <div class="card-media" data-image-container hidden></div>
+        <h3></h3>
+        <p></p>
+        <ul class="checklist" data-list hidden></ul>
+      </article>
+    </template>
+    <template id="tpl-home-why-choose">
+      <article class="card">
+        <div class="card-media compact" data-image-container hidden></div>
+        <h3></h3>
+        <p></p>
+      </article>
+    </template>
+    <template id="tpl-home-testimonial">
+      <article class="card testimonial">
+        <p></p>
+        <cite></cite>
+      </article>
+    </template>
+  {% endif %}
 {% endblock %}

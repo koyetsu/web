@@ -1,64 +1,177 @@
 {% extends 'base.html' %}
 {% block content %}
-  <section class="hero">
+  {% if admin_mode %}
+    <div class="page-editor is-open" data-page-editor="contact">
+      <div class="page-editor__header">
+        <h2 class="page-editor__title">Contact page editor</h2>
+        <button type="button" class="page-editor__toggle" data-editor-toggle>Hide editor</button>
+      </div>
+      <form class="page-editor__body" data-editor-form>
+        <input type="hidden" name="page" value="contact" />
+        <p class="editor-hint">Keep location, form fields, and about text up to date from here.</p>
+        <div class="form-fields">
+          <label>Hero badge <input type="text" name="contact_hero_badge" value="{{ contact.hero.badge }}" /></label>
+          <label>Hero title <input type="text" name="contact_hero_title" value="{{ contact.hero.title }}" /></label>
+          <label>Hero description <textarea name="contact_hero_description">{{ contact.hero.description }}</textarea></label>
+        </div>
+
+        <h3>Studio information</h3>
+        <div class="form-fields">
+          <label>Visit title <input type="text" name="contact_visit_title" value="{{ contact.studio.visit_title }}" /></label>
+          <label>Address lines <textarea name="contact_address_lines">{{ contact.studio.address | join('\n') }}</textarea></label>
+          <label>Hours title <input type="text" name="contact_hours_title" value="{{ contact.studio.hours_title }}" /></label>
+          <label>Hours lines <textarea name="contact_hours_lines">{{ contact.studio.hours | join('\n') }}</textarea></label>
+          <label>Phone title <input type="text" name="contact_phone_title" value="{{ contact.studio.phone_title }}" /></label>
+          <label>Phone number <input type="text" name="contact_phone" value="{{ contact.studio.phone }}" /></label>
+          <label>Phone link (tel:) <input type="text" name="contact_phone_href" value="{{ contact.studio.phone_href }}" /></label>
+          <label>Email title <input type="text" name="contact_email_title" value="{{ contact.studio.email_title }}" /></label>
+          <label>Email address <input type="email" name="contact_email" value="{{ contact.studio.email }}" /></label>
+        </div>
+
+        <h3>Contact form</h3>
+        <div class="form-fields">
+          <label>Form title <input type="text" name="contact_form_title" value="{{ contact.form.title }}" /></label>
+          <label>Submit button <input type="text" name="contact_form_submit" value="{{ contact.form.submit_text }}" /></label>
+        </div>
+        <div class="collection-wrapper">
+          <div class="collection" data-collection="contact_form">
+            {% for field in contact.form.fields %}
+              <div class="collection-item">
+                <div class="collection-item-header">
+                  <strong>Field {{ loop.index }}</strong>
+                  <button type="button" class="remove-item">Remove</button>
+                </div>
+                <label>Label <input type="text" name="contact_form_label" value="{{ field.label }}" /></label>
+                <label>Name <input type="text" name="contact_form_name" value="{{ field.name }}" /></label>
+                <label>Type
+                  <select name="contact_form_type">
+                    <option value="text" {% if field.type == 'text' %}selected{% endif %}>Text</option>
+                    <option value="email" {% if field.type == 'email' %}selected{% endif %}>Email</option>
+                    <option value="textarea" {% if field.type == 'textarea' %}selected{% endif %}>Textarea</option>
+                  </select>
+                </label>
+                <label>Placeholder <input type="text" name="contact_form_placeholder" value="{{ field.placeholder }}" /></label>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-item" data-template="contact_form_template">Add field</button>
+        </div>
+        <template id="contact_form_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New field</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Label <input type="text" name="contact_form_label" /></label>
+            <label>Name <input type="text" name="contact_form_name" /></label>
+            <label>Type
+              <select name="contact_form_type">
+                <option value="text">Text</option>
+                <option value="email">Email</option>
+                <option value="textarea">Textarea</option>
+              </select>
+            </label>
+            <label>Placeholder <input type="text" name="contact_form_placeholder" /></label>
+          </div>
+        </template>
+
+        <h3>About section</h3>
+        <div class="form-fields">
+          <label>About title <input type="text" name="contact_about_title" value="{{ contact.about.title }}" /></label>
+          <label>About description <textarea name="contact_about_description">{{ contact.about.description }}</textarea></label>
+        </div>
+        <div class="collection-wrapper">
+          <div class="collection" data-collection="contact_about">
+            {% for card in contact.about.cards %}
+              <div class="collection-item">
+                <div class="collection-item-header">
+                  <strong>Card {{ loop.index }}</strong>
+                  <button type="button" class="remove-item">Remove</button>
+                </div>
+                <label>Title <input type="text" name="contact_about_title_item" value="{{ card.title }}" /></label>
+                <label>Description <textarea name="contact_about_description_item">{{ card.description }}</textarea></label>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-item" data-template="contact_about_template">Add card</button>
+        </div>
+        <template id="contact_about_template">
+          <div class="collection-item">
+            <div class="collection-item-header">
+              <strong>New card</strong>
+              <button type="button" class="remove-item">Remove</button>
+            </div>
+            <label>Title <input type="text" name="contact_about_title_item" /></label>
+            <label>Description <textarea name="contact_about_description_item"></textarea></label>
+          </div>
+        </template>
+      </form>
+    </div>
+  {% endif %}
+
+  <section class="hero" data-preview-section="contact-hero">
     <div class="hero-content">
       <div>
-        <span class="badge">{{ contact.hero.badge }}</span>
-        <h1>{{ contact.hero.title }}</h1>
-        <p>{{ contact.hero.description }}</p>
+        <span class="badge" data-slot="contact.hero.badge">{{ contact.hero.badge }}</span>
+        <h1 data-slot="contact.hero.title">{{ contact.hero.title }}</h1>
+        <p data-slot="contact.hero.description">{{ contact.hero.description }}</p>
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" data-preview-section="contact-details">
     <div class="grid" style="max-width: 960px">
-      <div class="contact-card">
-        <strong>{{ contact.studio.visit_title }}</strong>
-        <div>
+      <div class="contact-card" data-preview-studio>
+        <strong data-slot="contact.studio.visit_title">{{ contact.studio.visit_title }}</strong>
+        <div data-list="contact.studio.address">
           {% for line in contact.studio.address %}
-            {{ line }}<br />
-          {% endfor %}
-        </div>
-        <div>
-          <strong>{{ contact.studio.hours_title }}</strong>
-          {% for line in contact.studio.hours %}
             <div>{{ line }}</div>
           {% endfor %}
         </div>
         <div>
-          <strong>{{ contact.studio.phone_title }}</strong>
-          <a href="tel:{{ contact.studio.phone_href }}">{{ contact.studio.phone }}</a>
+          <strong data-slot="contact.studio.hours_title">{{ contact.studio.hours_title }}</strong>
+          <div data-list="contact.studio.hours">
+            {% for line in contact.studio.hours %}
+              <div>{{ line }}</div>
+            {% endfor %}
+          </div>
         </div>
         <div>
-          <strong>{{ contact.studio.email_title }}</strong>
-          <a href="mailto:{{ contact.studio.email }}">{{ contact.studio.email }}</a>
+          <strong data-slot="contact.studio.phone_title">{{ contact.studio.phone_title }}</strong>
+          <a href="tel:{{ contact.studio.phone_href }}" data-slot-link="contact.studio.phone">{{ contact.studio.phone }}</a>
+        </div>
+        <div>
+          <strong data-slot="contact.studio.email_title">{{ contact.studio.email_title }}</strong>
+          <a href="mailto:{{ contact.studio.email }}" data-slot-link="contact.studio.email">{{ contact.studio.email }}</a>
         </div>
       </div>
 
-      <div class="contact-card">
-        <strong>{{ contact.form.title }}</strong>
+      <div class="contact-card" data-preview-form>
+        <strong data-slot="contact.form.title">{{ contact.form.title }}</strong>
         <form class="contact-form">
-          {% for field in contact.form.fields %}
-            <label>
-              {{ field.label }}
-              {% if field.type == 'textarea' %}
-                <textarea name="{{ field.name }}" placeholder="{{ field.placeholder }}"></textarea>
-              {% else %}
-                <input type="{{ field.type }}" name="{{ field.name }}" placeholder="{{ field.placeholder }}" />
-              {% endif %}
-            </label>
-          {% endfor %}
-          <button class="primary-button" type="submit">{{ contact.form.submit_text }}</button>
+          <div data-repeat="contact.form.fields">
+            {% for field in contact.form.fields %}
+              <label data-field>
+                <span class="field-label">{{ field.label }}</span>
+                {% if field.type == 'textarea' %}
+                  <textarea name="{{ field.name }}" placeholder="{{ field.placeholder }}"></textarea>
+                {% else %}
+                  <input type="{{ field.type }}" name="{{ field.name }}" placeholder="{{ field.placeholder }}" />
+                {% endif %}
+              </label>
+            {% endfor %}
+          </div>
+          <button class="primary-button" type="submit" data-slot="contact.form.submit_text">{{ contact.form.submit_text }}</button>
         </form>
       </div>
     </div>
   </section>
 
-  <section class="section alt">
+  <section class="section alt" data-preview-section="contact-about">
     <div class="grid" style="max-width: 900px">
-      <h2>{{ contact.about.title }}</h2>
-      <p>{{ contact.about.description }}</p>
-      <div class="grid grid-3">
+      <h2 data-slot="contact.about.title">{{ contact.about.title }}</h2>
+      <p data-slot="contact.about.description">{{ contact.about.description }}</p>
+      <div class="grid grid-3" data-repeat="contact.about.cards">
         {% for card in contact.about.cards %}
           <article class="card">
             <h3>{{ card.title }}</h3>
@@ -68,4 +181,19 @@
       </div>
     </div>
   </section>
+
+  {% if admin_mode %}
+    <template id="tpl-contact-form-field">
+      <label data-field>
+        <span class="field-label"></span>
+        <input type="text" />
+      </label>
+    </template>
+    <template id="tpl-contact-about-card">
+      <article class="card">
+        <h3></h3>
+        <p></p>
+      </article>
+    </template>
+  {% endif %}
 {% endblock %}
